@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>ProductCatalogue.Application</AssemblyName>
+    <RootNamespace>ProductCatalogue.Application</RootNamespace>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\Security\**" />
+    <EmbeddedResource Remove="Common\Security\**" />
+    <None Remove="Common\Security\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\Behaviours\PerformanceBehaviour.cs" />
+    <Compile Remove="Common\Interfaces\Account\IIdentityService.cs" />
+    <Compile Remove="Common\Models\DomainEventNotification.cs" />
+    <Compile Remove="DependencyInjection.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.3.4" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common.Extension\Common.Extension.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>

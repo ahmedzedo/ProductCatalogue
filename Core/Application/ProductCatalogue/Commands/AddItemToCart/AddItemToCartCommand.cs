@@ -41,11 +41,11 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
         #region Request Handle
         public async override Task<Response<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
-            var Cart = await CartRepository.GetQuery().FirstOrDefaultAsync();
+            var cart = await CartRepository.GetQuery().FirstOrDefaultAsync();
             
-            if (Cart == null)
+            if (cart == null)
             {
-                await CartRepository.CreateDefaultCart();
+                cart = await CartRepository.CreateDefaultCart();
                 await UnitOfWork.SaveAsync(cancellationToken);
             }
             
@@ -57,7 +57,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
             {
                 item = new CartItem
                 {
-                    CartId = Cart.Id,
+                    CartId = cart.Id,
                     ProductId = request.ProductId,
                     Count = request.Count,
                 };

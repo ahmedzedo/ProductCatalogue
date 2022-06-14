@@ -10,7 +10,7 @@ using ValidationException = ProductCatalogue.Application.Common.Exceptions.Valid
 namespace ProductCatalogue.Application.Common.Behaviours
 {
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IBaseRequest<TResponse>
+        where TRequest : IBaseRequest
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 

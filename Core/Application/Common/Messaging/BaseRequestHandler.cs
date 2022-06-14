@@ -20,6 +20,8 @@ namespace ProductCatalogue.Application.Common.Messaging
         protected IServiceProvider ServiceProvider { get; }
 
         private IRequestPipeline<TIn, TOut> _requestPipeline;
+        private  IEnumerable<T> GetInstances<T>()
+        => (IEnumerable<T>)ServiceProvider.GetServices(typeof(T));
         protected IRequestPipeline<TIn, TOut> RequestPipeline => _requestPipeline ??= ServiceProvider.GetRequiredService<IRequestPipeline<TIn, TOut>>();
         #endregion
 
@@ -39,7 +41,10 @@ namespace ProductCatalogue.Application.Common.Messaging
 
             if (RequestPipeline != null)
             {
-                response = await RequestPipeline.Handle(request, HandleRequest, cancellationToken);
+                Task<Response<TOut>> Handler()=> HandleRequest(request,cancellationToken);
+                response =  GetInstances<IRequestPipeline<TIn, TOut>>()
+            .Reverse()
+            .Aggregate((MyRequestHandlerDelegate<TOut>)Handler, (next, pipeline) => () => pipeline.Handle(request, cancellationToken, next))().Result;
             }
             else
             {

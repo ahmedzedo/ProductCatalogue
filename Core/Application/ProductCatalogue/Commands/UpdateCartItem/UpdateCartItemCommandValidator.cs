@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart;
-using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateItemToCart;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
 {

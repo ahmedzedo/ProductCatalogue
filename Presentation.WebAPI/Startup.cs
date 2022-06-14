@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProductCatalogue.Application.Common.Interfaces.Account;
+using ProductCatalogue.Persistence.EF;
 using ProductCatalogue.WebAPI.Services;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,11 @@ namespace Presentation.WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Presentation.WebAPI v1"));
             }
-
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.EnsureCreated();
+            }
             app.UseHttpsRedirection();
 
             app.UseRouting();

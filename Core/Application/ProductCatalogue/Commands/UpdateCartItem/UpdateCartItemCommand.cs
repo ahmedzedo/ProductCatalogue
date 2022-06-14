@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using ProductCatalogue.Application.Common.Exceptions;
 
-namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateItemToCart
+namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
 {
     #region Request
     public class UpdateCartItemCommand : Request<bool>

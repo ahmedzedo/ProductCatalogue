@@ -2,7 +2,7 @@
 using Presentation.WebAPI.Common;
 using ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart;
 using ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem;
-using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateItemToCart;
+using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem;
 using ProductCatalogue.Application.ProductCatalogue.Queries.GetCart;
 using System;
 using System.Collections.Generic;

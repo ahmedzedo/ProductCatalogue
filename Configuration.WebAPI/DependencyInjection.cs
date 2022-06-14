@@ -22,7 +22,7 @@ namespace Configuration.WebAPI
         {
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySQL(
+                options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 

@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
 {
-    public class UpdateCartItemCommandValidator : AbstractValidator<AddItemToCartCommand>
+    public class AddItemToCartCommandValidator : AbstractValidator<AddItemToCartCommand>
     {
-        public UpdateCartItemCommandValidator()
+        public AddItemToCartCommandValidator()
         {
             RuleFor(i => i.ProductId)
                 .NotEmpty();

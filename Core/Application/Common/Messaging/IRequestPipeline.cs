@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.Common.Messaging
 {
+    public delegate Task<Response<TResponse>> MyRequestHandlerDelegate<TResponse>();
     public interface IRequestPipeline<TRequest, TResponse>
     {
-        Task<Response<TResponse>> Handle(TRequest request, Func<TRequest, CancellationToken, Task<Response<TResponse>>> next, CancellationToken cancellationToken);
+        Task<Response<TResponse>> Handle(TRequest request, CancellationToken cancellationToken, MyRequestHandlerDelegate<TResponse> next);
     }
 }

@@ -4,6 +4,7 @@ using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,7 +40,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
                 .WhereIf(!string.IsNullOrEmpty(request.Description), p => p.Description.Contains(request.Description))
                 .OrderBy(p => p.OrderByDescending(o => o.CreatedOn))
                 .ToPagedListAsync(request.PageIndex, request.PageSize);
-
+            Debug.WriteLine("in request");
             return Response.Success(items, totalCount);
         }
         #endregion

@@ -17,23 +17,37 @@ namespace ProductCatalogue.Persistence.EF
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
+        #region Properties
         private readonly ICurrentUserService _currentUserService;
+        #endregion
 
+        #region Constructor
         public ApplicationDbContext(
-            DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions,
-             ICurrentUserService currentUserService
-            ) : base(options, operationalStoreOptions)
+           DbContextOptions options,
+           IOptions<OperationalStoreOptions> operationalStoreOptions,
+            ICurrentUserService currentUserService
+           ) : base(options, operationalStoreOptions)
         {
             _currentUserService = currentUserService;
         }
+        #endregion
 
+        #region DB Sets
         public DbSet<Product> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        #endregion
 
+        #region On Model Creating
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            base.OnModelCreating(builder);
+        }
+        #endregion
 
+        #region Save Changes
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
@@ -57,13 +71,7 @@ namespace ProductCatalogue.Persistence.EF
             return result;
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        #endregion
 
-            base.OnModelCreating(builder);
-        }
-
-     
     }
 }

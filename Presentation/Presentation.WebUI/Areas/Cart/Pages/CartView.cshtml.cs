@@ -9,8 +9,8 @@ using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts;
 using ProductCatalogue.Application.ProductCatalogue.Queries.GetCart;
 using System;
-using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateItemToCart;
 using ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem;
+using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem;
 
 namespace ProductCatalogue.Presentation.WebUI.Areas.Cart.Pages
 {

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Persistence.EF.IUnitOfWorks;
 using Persistence.EF.Repositories.Packages;
 using ProductCatalogue.Application.Common.Behaviours;
@@ -22,7 +23,7 @@ namespace ProductCatalogue.Configuration.WebUI
         {
             
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySQL(
+                options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
@@ -35,13 +36,15 @@ namespace ProductCatalogue.Configuration.WebUI
             services.AddScoped<ICartItemRepository, CartItemRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.FullName.Contains("ProductCatalogue.Application"))
+                            .FirstOrDefault());
             services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.FullName.Contains("ProductCatalogue.Application"))
                             .FirstOrDefault());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-            services.AddScoped(typeof(IRequestPipeline<,>), typeof(RequestPipeline<,>));
+            services.TryAddTransient(typeof(IRequestPipeline<,>), typeof(RequestPipeline<,>));
 
             return services;
         }

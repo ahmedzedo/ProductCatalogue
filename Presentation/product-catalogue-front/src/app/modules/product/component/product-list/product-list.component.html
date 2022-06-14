@@ -1,0 +1,40 @@
+<p>product-list works!</p>
+<form >
+
+
+<table class="table">
+  <thead>
+      <tr>
+          <th>
+            Name
+          </th>
+          <th>
+             Description
+          </th>
+          <th>
+         Price
+         </th>
+
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+
+      <tr *ngFor="let product of service.formData">
+          <td>
+              {{product.name}}
+          </td>
+          <td>
+             {{product.description}}
+          </td>
+          <td>
+            {{product.price}}
+         </td>
+          <td>
+
+          </td>
+      </tr>
+
+  </tbody>
+</table>
+</form>

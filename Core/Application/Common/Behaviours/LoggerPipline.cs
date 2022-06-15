@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.Common.Behaviours
 {
-    public class RequestPipeline<TRequest, TResponse> : IRequestPipeline<TRequest, TResponse>
+    public class LoggerPipline<TRequest, TResponse> : IRequestPipeline<TRequest, TResponse>
         where TRequest : IBaseRequest<TResponse>
     {
+        #region Dependencies
+
+        #endregion
+
         #region Constructor
-        public RequestPipeline()
+        public LoggerPipline()
         {
 
         }
@@ -24,9 +28,9 @@ namespace ProductCatalogue.Application.Common.Behaviours
         {
             try
             {
-                Debug.WriteLine($"before request ");
+                Debug.WriteLine($"Logger Pipline Before Rquest ");
                 var response = await next();
-                Debug.WriteLine($"after request ");
+                Debug.WriteLine($"Logger Pipline after Rquest ");
 
                 return response;
             }
@@ -34,7 +38,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
             {
                 throw;
             }
-        } 
+        }
         #endregion
     }
 }

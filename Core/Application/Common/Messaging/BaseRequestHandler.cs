@@ -15,21 +15,14 @@ namespace ProductCatalogue.Application.Common.Messaging
     {
         #region Dependencies
         public IUnitOfWork UnitOfWork { get; }
-      
-
         protected IServiceProvider ServiceProvider { get; }
-
-        private IRequestPipeline<TIn, TOut> _requestPipeline;
-        private  IEnumerable<T> GetInstances<T>()
-        => (IEnumerable<T>)ServiceProvider.GetServices(typeof(T));
-        protected IRequestPipeline<TIn, TOut> RequestPipeline => _requestPipeline ??= ServiceProvider.GetRequiredService<IRequestPipeline<TIn, TOut>>();
+        
         #endregion
 
         #region Constructor
         public BaseRequestHandler(IServiceProvider serviceProvider, IUnitOfWork unitOfWork)
         {
-            UnitOfWork = unitOfWork;
-           
+            this.UnitOfWork = unitOfWork;
             this.ServiceProvider = serviceProvider;
         }
         #endregion
@@ -37,26 +30,33 @@ namespace ProductCatalogue.Application.Common.Messaging
         #region Handel
         public virtual async Task<Response<TOut>> Handle(TIn request, CancellationToken cancellationToken)
         {
-            Response<TOut> response = null;
-
-            if (RequestPipeline != null)
-            {
-                Task<Response<TOut>> Handler()=> HandleRequest(request,cancellationToken);
-                response =  GetInstances<IRequestPipeline<TIn, TOut>>()
-            .Reverse()
-            .Aggregate((MyRequestHandlerDelegate<TOut>)Handler, (next, pipeline) => () => pipeline.Handle(request, cancellationToken, next))().Result;
-            }
-            else
-            {
-                response = await HandleRequest(request, cancellationToken);
-            }
-
-            return response;
+            return await GetResponse(request, cancellationToken);
         }
+
         public abstract Task<Response<TOut>> HandleRequest(TIn request, CancellationToken cancellationToken);
 
         #endregion
 
+        #region Helper Methods
+        private IEnumerable<T> GetInstances<T>() => (IEnumerable<T>)ServiceProvider.GetServices(typeof(T));
+
+        private async Task<Response<TOut>> GetResponse(TIn request, CancellationToken cancellationToken)
+        {
+            var RequestPipelines = GetInstances<IRequestPipeline<TIn, TOut>>();
+
+            if (RequestPipelines.Any())
+            {
+                Task<Response<TOut>> Handler() => HandleRequest(request, cancellationToken);
+                return await RequestPipelines
+                        .Reverse()
+                        .Aggregate((MyRequestHandlerDelegate<TOut>)Handler, (next, pipeline) => () => pipeline.Handle(request, cancellationToken, next))();
+            }
+            else
+            {
+                return await HandleRequest(request, cancellationToken);
+            }
+        } 
+        #endregion
 
     }
 }

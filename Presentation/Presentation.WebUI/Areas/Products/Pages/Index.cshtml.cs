@@ -46,7 +46,7 @@ namespace ProductCatalogue.Presentation.WebUI.Areas.Products.Pages
             Message = response.Message;
         }
 
-        public async Task<IActionResult> OnPostAddToCartAsync()
+        public async Task<ActionResult> OnPostAddToCartAsync()
         {
             ModelState.Remove("PageIndex");
             if (!ModelState.IsValid)
@@ -55,9 +55,9 @@ namespace ProductCatalogue.Presentation.WebUI.Areas.Products.Pages
             }
 
             var response = await Mediator.Send(AddItemToCartCommand);
-            Message = response.Message;
+            //Message = response.Message;
 
-            return !response.IsSuccess ? Page() : LocalRedirect("/Cart/CartView");
+            return LocalRedirect("/Cart/CartView");//!response.IsSuccess ? Page() : LocalRedirect("/Cart/CartView");
         }
         #endregion
     }

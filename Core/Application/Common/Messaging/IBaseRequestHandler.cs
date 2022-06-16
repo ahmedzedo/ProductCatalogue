@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.Common.Messaging
 {
-    public interface IBaseRequestHandler<TIn, TOut> : IRequestHandler<TIn, Response<TOut>>
+    public interface IBaseRequestHandler<TIn, TOut> : IRequestHandler<TIn, TOut>
          where TIn : IBaseRequest<TOut>
     {
     }
+
 }

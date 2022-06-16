@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.Common.Behaviours
 {
-    public class LoggerPipline<TRequest, TResponse> : IRequestPipeline<TRequest, TResponse>
+    public class LoggerPipline<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
         where TRequest : IBaseRequest<TResponse>
     {
         #region Dependencies
@@ -24,7 +24,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
         #endregion
 
         #region Handel
-        public async Task<Response<TResponse>> Handle(TRequest request, CancellationToken cancellationToken, MyRequestHandlerDelegate<TResponse> next)
+        public async Task<IResponse<TResponse>> Handle(TRequest request, CancellationToken cancellationToken, MyRequestResponseHandlerDelegate<TResponse> next)
         {
             try
             {

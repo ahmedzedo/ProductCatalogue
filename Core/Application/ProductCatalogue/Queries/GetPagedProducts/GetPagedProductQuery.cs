@@ -32,7 +32,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
         #endregion
 
         #region Handel
-        public async override Task<Response<IEnumerable<Product>>> HandleRequest(GetPagedProductQuery request, CancellationToken cancellationToken)
+        public async override Task<IResponse<IEnumerable<Product>>> HandleRequest(GetPagedProductQuery request, CancellationToken cancellationToken)
         {
             (IEnumerable<Product> items, int totalCount) = await ProductRepository
                 .GetQuery()

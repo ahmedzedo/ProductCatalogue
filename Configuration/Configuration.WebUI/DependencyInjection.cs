@@ -44,7 +44,9 @@ namespace ProductCatalogue.Configuration.WebUI
                             .FirstOrDefault());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-            services.TryAddTransient(typeof(IRequestPipeline<,>), typeof(RequestPipeline<,>));
+            services.AddTransient(typeof(IRequestPipeline<,>), typeof(RequestPipeline<,>));
+            services.AddTransient(typeof(IRequestPipeline<,>), typeof(LoggerPipline<,>));
+
 
             return services;
         }

@@ -31,7 +31,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
         #endregion
 
         #region Request Handle
-        public async override Task<Response<bool>> HandleRequest(RemoveCartItemCommand request, CancellationToken cancellationToken)
+        public async override Task<IResponse<bool>> HandleRequest(RemoveCartItemCommand request, CancellationToken cancellationToken)
         {
             var item = await CartItemRepository.GetByIdAsync(request.Id);
 

@@ -32,7 +32,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
         #endregion
 
         #region Handel
-        public async override Task<Response<Cart>> HandleRequest(GetCartQuery request, CancellationToken cancellationToken)
+        public async override Task<IResponse<Cart>> HandleRequest(GetCartQuery request, CancellationToken cancellationToken)
         {
             string includeEntities = $"Items.Product.{nameof(Domain.Entities.ProductCatalogue.Product)}";
 

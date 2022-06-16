@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ValidationException = ProductCatalogue.Application.Common.Exceptions.ValidationException;
+using System.Diagnostics;
 
 namespace ProductCatalogue.Application.Common.Behaviours
 {
@@ -21,6 +22,8 @@ namespace ProductCatalogue.Application.Common.Behaviours
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
+            Debug.WriteLine($"validation Pibline ");
+
             if (_validators.Any())
             {
                 var context = new ValidationContext<TRequest>(request);

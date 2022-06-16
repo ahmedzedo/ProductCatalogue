@@ -10,7 +10,7 @@ using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
 {
     #region Request
-    public class AddItemToCartCommand : Request<Guid>
+    public class AddItemToCartCommand : BaseRequest<Guid>
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
@@ -19,7 +19,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
     #endregion
 
     #region Request Handler
-    public class AddItemToCartCommandHandler : BaseRequestHandler<AddItemToCartCommand, Guid>
+    public class AddItemToCartCommandHandler : AbstractBaseRequestHandler<AddItemToCartCommand, Guid>
     {
         #region Dependencies
         public ICartItemRepository CartItemRepository { get; set; }
@@ -39,7 +39,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
         #endregion
 
         #region Request Handle
-        public async override Task<Response<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
+        public async override Task<Guid> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
             var cart = await CartRepository.GetQuery().FirstOrDefaultAsync();
             
@@ -69,8 +69,8 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
                 CartItemRepository.Update(item);
             }
             await UnitOfWork.SaveAsync(cancellationToken);
-           
-            return Response.Success(item.Id);
+
+            return item.Id;//Response.Success(item.Id);
 
         }
         #endregion

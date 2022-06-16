@@ -37,7 +37,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
         #endregion
 
         #region RequestHandle
-        public async override Task<Response<bool>> HandleRequest(UpdateCartItemCommand request, CancellationToken cancellationToken)
+        public override async Task<IResponse<bool>> HandleRequest(UpdateCartItemCommand request, CancellationToken cancellationToken)
         {
             var item = await CartItemRepository.GetByIdAsync(request.Id);
 

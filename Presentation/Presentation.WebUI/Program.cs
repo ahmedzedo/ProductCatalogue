@@ -16,10 +16,8 @@ namespace ProductCatalogue.Presentation.WebUI
     {
         public async static Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
-                .Build();
-
+            var host = CreateHostBuilder(args).Build();
+                //.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
 
             using (var scope = host.Services.CreateScope())
             {

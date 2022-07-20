@@ -11,7 +11,7 @@ using ProductCatalogue.Application.Common.Exceptions;
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
 {
     #region Request
-    public class UpdateCartItemCommand : Request<bool>
+    public class UpdateCartItemCommand : BaseCommand<bool>
     {
         public Guid Id { get; set; }
         public int Count { get; set; }
@@ -19,10 +19,11 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
     #endregion
 
     #region Request Handler
-    public class UpdateCartItemCommandHandler : BaseRequestHandler<UpdateCartItemCommand, bool>
+    public class UpdateCartItemCommandHandler : BaseCommandHandler<UpdateCartItemCommand, bool>
     {
         #region Dependencies
-        public ICartItemRepository CartItemRepository { get; set; }
+        private ICartItemRepository CartItemRepository { get; }
+        private IUnitOfWork UnitOfWork { get; }
         #endregion
 
         #region Constructor
@@ -30,8 +31,9 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
             IServiceProvider serviceProvider,
             IUnitOfWork unitOfWork,
             ICartItemRepository cartItemRepository)
-           : base(serviceProvider, unitOfWork)
+           : base(serviceProvider)
         {
+            UnitOfWork = unitOfWork;
             CartItemRepository = cartItemRepository;
         }
         #endregion

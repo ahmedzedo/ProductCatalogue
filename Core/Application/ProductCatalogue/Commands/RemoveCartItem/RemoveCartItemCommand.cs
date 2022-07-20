@@ -11,21 +11,23 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
 {
-    public class RemoveCartItemCommand : Request<bool>
+    public class RemoveCartItemCommand : BaseCommand<bool>
     {
         public Guid Id { get; set; }
     }
 
-    public class RemoveCartItemCommandHandler : BaseRequestHandler<RemoveCartItemCommand, bool>
+    public class RemoveCartItemCommandHandler : BaseCommandHandler<RemoveCartItemCommand, bool>
     {
         #region Dependencies
         public ICartItemRepository CartItemRepository { get; set; }
+        public IUnitOfWork UnitOfWork { get; set; }
         #endregion
 
         #region Constructor
         public RemoveCartItemCommandHandler(IServiceProvider serviceProvider, IUnitOfWork unitOfWork, ICartItemRepository cartItemRepository)
-           : base(serviceProvider, unitOfWork)
+           : base(serviceProvider)
         {
+            UnitOfWork = unitOfWork;
             CartItemRepository = cartItemRepository;
         }
         #endregion

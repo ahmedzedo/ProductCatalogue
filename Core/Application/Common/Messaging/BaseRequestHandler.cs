@@ -15,15 +15,13 @@ namespace ProductCatalogue.Application.Common.Messaging
         where TIn : IBaseRequest<TOut>
     {
         #region Dependencies
-        public IUnitOfWork UnitOfWork { get; }
         protected IServiceProvider ServiceProvider { get; }
 
         #endregion
 
         #region Constructor
-        public AbstractBaseRequestHandler(IServiceProvider serviceProvider, IUnitOfWork unitOfWork)
+        public AbstractBaseRequestHandler(IServiceProvider serviceProvider)
         {
-            this.UnitOfWork = unitOfWork;
             this.ServiceProvider = serviceProvider;
         }
         #endregion
@@ -41,21 +39,11 @@ namespace ProductCatalogue.Application.Common.Messaging
         where TIn : Request<TOut>
     {
         #region Constructor
-        public BaseRequestHandler(IServiceProvider serviceProvider, IUnitOfWork unitOfWork)
-           : base(serviceProvider, unitOfWork)
+        public BaseRequestHandler(IServiceProvider serviceProvider)
+           : base(serviceProvider)
         {
 
         } 
-        #endregion
-
-        #region Handel
-        public override async Task<IResponse<TOut>> Handle(TIn request, CancellationToken cancellationToken)
-        {
-            //return await GetResponse(request, cancellationToken);
-          return  await HandleRequest(request, cancellationToken);
-        }
-
-
         #endregion
 
         #region Helper Methods
@@ -81,7 +69,25 @@ namespace ProductCatalogue.Application.Common.Messaging
 
     }
 
-     
+    public abstract class BaseCommandHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
+         where TIn : BaseCommand<TOut>
+    {
+        public BaseCommandHandler(IServiceProvider serviceProvider)
+          : base(serviceProvider)
+        {
+
+        }
+    }
+
+    public abstract class BaseQueryHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
+         where TIn : BaseQuery<TOut>
+    {
+        public BaseQueryHandler(IServiceProvider serviceProvider)
+          : base(serviceProvider)
+        {
+
+        }
+    }
 
 
 }

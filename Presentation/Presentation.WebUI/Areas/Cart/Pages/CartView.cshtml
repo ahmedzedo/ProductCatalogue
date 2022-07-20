@@ -1,4 +1,4 @@
-﻿@page 
+﻿@page
 @model ProductCatalogue.Presentation.WebUI.Areas.Cart.Pages.CartViewModel
 
 @{
@@ -13,42 +13,45 @@
 <p>
     @Model.Message
 </p>
-<form method="post">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.CartItems[0].Product.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CartItems[0].Count)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (var i = 0; i < Model.CartItems.Count; i++)
-            {
-
+@if (Model.CartItems.Count > 0)
+{
+    <form method="post">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        <input type="text" disabled asp-for="@Model.CartItems[i].Product.Name" />
-                        <input type="hidden" asp-for="@Model.CartItems[i].ProductId" />
-                        <input type="hidden" asp-for="@Model.CartItems[i].Id" />
-                    </td>
-                    @*<td>
-                    @Html.DisplayFor(modelItem => item.Count)
-                </td>*@
-                    <td>
-                        <input type="text" asp-for="@Model.CartItems[i].Count" />
-                    </td>
-                    <td>
-                        <button type="submit" asp-page-handler="Edit" asp-route-id="@Model.CartItems[i].Id">Edit</button> |
-                        <button type="submit" asp-page-handler="Delete" asp-route-id="@Model.CartItems[i].Id">Delete</button> |
-
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CartItems[0].Product.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CartItems[0].Count)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</form>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.CartItems.Count; i++)
+                {
+
+                    <tr>
+                        <td>
+                            <input type="text" disabled asp-for="@Model.CartItems[i].Product.Name" />
+                            <input type="hidden" asp-for="@Model.CartItems[i].ProductId" />
+                            <input type="hidden" asp-for="@Model.CartItems[i].Id" />
+                        </td>
+                        @*<td>
+                @Html.DisplayFor(modelItem => item.Count)
+                </td>*@
+                        <td>
+                            <input type="text" asp-for="@Model.CartItems[i].Count" />
+                        </td>
+                        <td>
+                            <button type="submit" asp-page-handler="Edit" asp-route-id="@Model.CartItems[i].Id">Edit</button> |
+                            <button type="submit" asp-page-handler="Delete" asp-route-id="@Model.CartItems[i].Id">Delete</button> |
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+}

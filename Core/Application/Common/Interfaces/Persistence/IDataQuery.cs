@@ -10,6 +10,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
 {
     public interface IDataQuery<T>
     {
+        IDataQuery<T> AsTracking();
         /// <summary>
         /// The where.
         /// </summary>
@@ -176,6 +177,6 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="pageIndex">The page index.</param>
         /// <param name="pageSize">The page size.</param>
         /// <returns>The result.</returns>
-        Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize);
+        Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize);   
     }
 }

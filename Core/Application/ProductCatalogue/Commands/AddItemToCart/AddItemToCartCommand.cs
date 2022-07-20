@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ProductCatalogue.Application.ProductCatalogue.IRepositories;
+using System.Linq;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
 {
@@ -22,18 +23,22 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
     public class AddItemToCartCommandHandler : AbstractBaseRequestHandler<AddItemToCartCommand, Guid>
     {
         #region Dependencies
-        public ICartItemRepository CartItemRepository { get; set; }
+       // public ICartItemRepository CartItemRepository { get; set; }
         public ICartRepository CartRepository { get; set; }
+
+        public IDataQuery<Cart> CartDataQurey => (IDataQuery<Cart>)ServiceProvider.GetService(typeof(IDataQuery<Cart>));
+        public IUnitOfWork UnitOfWork { get; set; }
         #endregion
 
         #region Constructor
         public AddItemToCartCommandHandler(IServiceProvider serviceProvider,
                                            IUnitOfWork unitOfWork,
-                                           ICartItemRepository cartItemRepository,
+                                           //ICartItemRepository cartItemRepository,
                                            ICartRepository cartRepository)
-           : base(serviceProvider, unitOfWork)
+           : base(serviceProvider)
         {
-            CartItemRepository = cartItemRepository;
+            UnitOfWork = unitOfWork;
+           // CartItemRepository = cartItemRepository;
             CartRepository = cartRepository;
         }
         #endregion
@@ -41,17 +46,15 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
         #region Request Handle
         public async override Task<Guid> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
-            var cart = await CartRepository.GetQuery().FirstOrDefaultAsync();
+            var cart = await CartDataQurey.AsTracking().Include("Items").FirstOrDefaultAsync();
             
             if (cart == null)
             {
                 cart = await CartRepository.CreateDefaultCart();
                 await UnitOfWork.SaveAsync(cancellationToken);
             }
-            
-            var item = await CartItemRepository
-                .GetQuery()
-                .FirstOrDefaultAsync(i => i.ProductId == request.ProductId);
+
+            var item =  cart.Items.Where(c=> c.ProductId == request.ProductId).FirstOrDefault();
 
             if (item == null)
             {
@@ -61,12 +64,12 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
                     ProductId = request.ProductId,
                     Count = request.Count,
                 };
-                CartItemRepository.Add(item);
+               cart.Items.Add(item);
             }
             else
             {
                 item.Count = request.Count;
-                CartItemRepository.Update(item);
+                CartRepository.Update(cart);
             }
             await UnitOfWork.SaveAsync(cancellationToken);
 

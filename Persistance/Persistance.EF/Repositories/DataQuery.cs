@@ -14,18 +14,25 @@ namespace ProductCatalogue.Persistence.EF.Repositories
     {
         #region Properties
 
+
         protected internal IQueryable<T> DbQuery { get; set; }
+        protected internal DbSet<T> DbSet { get; set; }
         #endregion
 
         #region Constructors
-        internal DataQuery(IQueryable<T> query)
+        public DataQuery(ApplicationDbContext applicationDbContext)
         {
-            this.DbQuery = query;
+            this.DbSet = applicationDbContext.Set<T>();
+            this.DbQuery = DbSet.AsNoTracking().AsQueryable();
         }
         #endregion
 
         #region IDataQuery<T> Implementation
-
+        public virtual IDataQuery<T> AsTracking()
+        {
+            this.DbQuery = this.DbQuery.AsTracking();
+            return this;
+        }                 
         /// <summary>
         /// The where.
         /// </summary>
@@ -41,6 +48,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
             return this;
         }
 
+        
         /// <summary>
         /// The WhereIf to assert from condition before applying filter
         /// </summary>
@@ -358,7 +366,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize)
         {
             int totalCount = this.DbQuery.Count();
-            var result = await Task.FromResult(this.DbQuery.Skip(pageIndex  * pageSize).Take(pageSize).ToList());
+            var result = await Task.FromResult(this.DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToList());
 
             DbQuery = null;
 

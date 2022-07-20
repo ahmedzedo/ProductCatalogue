@@ -35,14 +35,23 @@ namespace ProductCatalogue.Presentation.WebUI.Areas.Cart.Pages
         public GetCartQuery GetCartQuery { get; set; } = new GetCartQuery();
 
         [BindProperty]
-        public IList<CartItem> CartItems { get; set; } 
+        public IList<CartItem> CartItems { get; set; } = new List<CartItem>();
         #endregion
 
         #region Handlers
         public async Task OnGetAsync()
         {
             var response = await Mediator.Send(GetCartQuery);
-            CartItems = response.Data.Items.ToList();
+
+            if (response == null)
+            {
+                throw new Exception("Unexpected Exception");
+            }
+
+            if (response.IsSuccess)
+            {
+                CartItems = response.Data.Items.ToList();
+            }
             Message = response.Message;
         }
 

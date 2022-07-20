@@ -15,8 +15,8 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <returns>
         /// The <see cref="T"/>.
         /// </returns>
-         T GetById(object id);
-                       /// <summary>
+        T GetById(object id);
+        /// <summary>
         /// The get by id async.
         /// </summary>
         /// <param name="id">
@@ -25,6 +25,6 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-         Task<T> GetByIdAsync(object id);
-           }
+        Task<T> GetByIdAsync(object id);
+    }
 }

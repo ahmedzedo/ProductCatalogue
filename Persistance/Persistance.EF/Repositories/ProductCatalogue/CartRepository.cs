@@ -1,5 +1,6 @@
 ﻿using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
+using ProductCatalogue.Domain.Entities.Users;
 using ProductCatalogue.Persistence.EF;
 using ProductCatalogue.Persistence.EF.Repositories;
 using System;
@@ -21,7 +22,7 @@ namespace Persistence.EF.Repositories.Packages
             var cart = new Cart
             {
                 Items = new List<CartItem>(),
-                User = new ProductCatalogue.Domain.Entities.Users.User
+                User = new User
                 {
                     Id = Guid.NewGuid(),
                     UserName = "admin",

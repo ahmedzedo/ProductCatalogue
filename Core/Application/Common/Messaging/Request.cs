@@ -24,7 +24,24 @@
         }
     }
 
-    public class PagedListRequest<TResponse> : Request<TResponse>
+    public class BaseCommand<TResponse> : Request<TResponse>
+    {
+        public BaseCommand(string userName = default)
+             : base(userName)
+        {
+
+        }
+    }
+    public class BaseQuery<TResponse> : Request<TResponse>
+    {
+        public BaseQuery(string userName = default)
+             : base(userName)
+        {
+
+        }
+    }
+
+    public class PagedListQuery<TResponse> : BaseQuery<TResponse>
     {
         #region Properites
         public int PageIndex { get; set; } = 0;
@@ -35,7 +52,7 @@
         #endregion
 
         #region Constructors
-        public PagedListRequest(string userName = default)
+        public PagedListQuery(string userName = default)
             : base(userName)
         {
 

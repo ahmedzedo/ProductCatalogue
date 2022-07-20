@@ -8,7 +8,7 @@ namespace ProductCatalogue.Domain.Entities.ProductCatalogue
     {
         public Product()
         {
-            //CartItems = new HashSet<CartItem>();
+            CartItems = new HashSet<CartItem>();
         }
 
         public Guid Id { get; set; }
@@ -16,6 +16,6 @@ namespace ProductCatalogue.Domain.Entities.ProductCatalogue
         public string Description { get; set; }
         public string Picture { get; set; }
         public decimal Price { get; set; }
-        //public virtual ICollection<CartItem> CartItems { get; set; }
+        public virtual ICollection<CartItem> CartItems { get; set; }
     }
 }

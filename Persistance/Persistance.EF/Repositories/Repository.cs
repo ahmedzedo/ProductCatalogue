@@ -171,7 +171,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         #region Read Method
         public IDataQuery<T> GetQuery()
         {
-            return new DataQuery<T>(DbSet.AsNoTracking().AsQueryable());
+            return new DataQuery<T>(Context);//DbSet.AsNoTracking().AsQueryable());
         }
         #endregion
 

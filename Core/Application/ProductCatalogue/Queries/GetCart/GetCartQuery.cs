@@ -12,20 +12,21 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
 {
-    public class GetCartQuery : Request<Cart>
+    public class GetCartQuery : BaseQuery<Cart>
     {
         public Guid Id { get; set; }
         public List<CartItem> Items { get; set; }
     }
-    public class GetCartQueryHandler : BaseRequestHandler<GetCartQuery, Cart>
+    public class GetCartQueryHandler : BaseQueryHandler<GetCartQuery, Cart>
     {
         #region Dependencies
         private ICartRepository CartRepository { get; set; }
+        private IDataQuery<Cart> CartDataQuery => (IDataQuery<Cart>)ServiceProvider.GetService(typeof(IDataQuery<Cart>));
         #endregion
 
         #region Constructor
         public GetCartQueryHandler(IServiceProvider serviceProvider, IUnitOfWork unitOfWork, ICartRepository cartRepository)
-           : base(serviceProvider, unitOfWork)
+           : base(serviceProvider)
         {
             CartRepository = cartRepository;
         }
@@ -36,12 +37,13 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
         {
             string includeEntities = $"Items.Product.{nameof(Domain.Entities.ProductCatalogue.Product)}";
 
-            var cart = await CartRepository.GetQuery().Include("Items").Include("Items.Product").FirstOrDefaultAsync();
+            var cart = await CartDataQuery.Include("Items")
+                                          .Include("Items.Product")
+                                          .FirstOrDefaultAsync();
 
             if (cart == null)
             {
-                await CartRepository.CreateDefaultCart();
-                await UnitOfWork.SaveAsync(cancellationToken);
+                return Response.Failuer<Cart>("No item in cart");
             }
             return Response.Success(cart);
         }

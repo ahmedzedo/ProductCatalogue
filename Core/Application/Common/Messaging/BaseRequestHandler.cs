@@ -11,8 +11,9 @@ using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 
 namespace ProductCatalogue.Application.Common.Messaging
 {
+    #region Abstract base Request Handler
     public abstract class AbstractBaseRequestHandler<TIn, TOut> : IBaseRequestHandler<TIn, TOut>
-        where TIn : IBaseRequest<TOut>
+  where TIn : IBaseRequest<TOut>
     {
         #region Dependencies
         protected IServiceProvider ServiceProvider { get; }
@@ -31,19 +32,21 @@ namespace ProductCatalogue.Application.Common.Messaging
         {
             return await HandleRequest(request, cancellationToken);
         }
-        public abstract Task<TOut> HandleRequest(TIn request, CancellationToken cancellationToken); 
+        public abstract Task<TOut> HandleRequest(TIn request, CancellationToken cancellationToken);
         #endregion
     }
+    #endregion
 
-    public abstract class BaseRequestHandler<TIn, TOut> : AbstractBaseRequestHandler<TIn,IResponse<TOut>> 
-        where TIn : Request<TOut>
+    #region Base Request Handler
+    public abstract class BaseRequestHandler<TIn, TOut> : AbstractBaseRequestHandler<TIn, IResponse<TOut>>
+   where TIn : Request<TOut>
     {
         #region Constructor
         public BaseRequestHandler(IServiceProvider serviceProvider)
            : base(serviceProvider)
         {
 
-        } 
+        }
         #endregion
 
         #region Helper Methods
@@ -68,9 +71,11 @@ namespace ProductCatalogue.Application.Common.Messaging
         #endregion
 
     }
+    #endregion
 
+    #region Base Commmand Handler
     public abstract class BaseCommandHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
-         where TIn : BaseCommand<TOut>
+    where TIn : BaseCommand<TOut>
     {
         public BaseCommandHandler(IServiceProvider serviceProvider)
           : base(serviceProvider)
@@ -78,16 +83,19 @@ namespace ProductCatalogue.Application.Common.Messaging
 
         }
     }
+    #endregion
 
+    #region Base Query Handler
     public abstract class BaseQueryHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
-         where TIn : BaseQuery<TOut>
+    where TIn : BaseQuery<TOut>
     {
         public BaseQueryHandler(IServiceProvider serviceProvider)
           : base(serviceProvider)
         {
 
         }
-    }
+    } 
+    #endregion
 
 
 }

@@ -19,7 +19,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
     }
     #endregion
 
-    #region Request Handler
+    #region Rquest Handler
     public class AddItemToCartCommandHandler : AbstractBaseRequestHandler<AddItemToCartCommand, Guid>
     {
         #region Dependencies

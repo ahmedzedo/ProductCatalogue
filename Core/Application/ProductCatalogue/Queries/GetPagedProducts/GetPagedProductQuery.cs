@@ -13,11 +13,15 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
 {
+    #region Request
     public class GetPagedProductQuery : PagedListQuery<IEnumerable<Product>>
     {
         public string Name { get; set; }
         public string Description { get; set; }
     }
+    #endregion
+
+    #region Request Handler
     public class GetPagedProductQueryHandler : BaseQueryHandler<GetPagedProductQuery, IEnumerable<Product>>
     {
         #region Dependencies
@@ -43,9 +47,10 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
                 .OrderBy(p => p.OrderByDescending(o => o.CreatedOn))
                 .ToPagedListAsync(request.PageIndex, request.PageSize);
             Debug.WriteLine("in request");
-           
+
             return Response.Success(items, totalCount);
         }
         #endregion
-    }
+    } 
+    #endregion
 }

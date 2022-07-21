@@ -12,11 +12,15 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
 {
+    #region Request
     public class GetCartQuery : BaseQuery<Cart>
     {
         public Guid Id { get; set; }
         public List<CartItem> Items { get; set; }
     }
+    #endregion
+
+    #region Request Handler
     public class GetCartQueryHandler : BaseQueryHandler<GetCartQuery, Cart>
     {
         #region Dependencies
@@ -48,5 +52,6 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
             return Response.Success(cart);
         }
         #endregion
-    }
+    } 
+    #endregion
 }

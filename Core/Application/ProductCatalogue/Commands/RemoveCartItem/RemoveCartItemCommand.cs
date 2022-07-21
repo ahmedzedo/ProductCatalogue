@@ -11,11 +11,14 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
 {
+    #region Request
     public class RemoveCartItemCommand : BaseCommand<bool>
     {
         public Guid Id { get; set; }
     }
+    #endregion
 
+    #region Request Handler
     public class RemoveCartItemCommandHandler : BaseCommandHandler<RemoveCartItemCommand, bool>
     {
         #region Dependencies
@@ -50,5 +53,6 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
         }
         #endregion
     }
-}
+} 
+#endregion
 

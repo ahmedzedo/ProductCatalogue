@@ -7,12 +7,12 @@ namespace ProductCatalogue.Application.Common.Messaging
         #region Static Methods
         public static Response<T> Failuer<T>(string message = "Failuer", Errors errors = default)
         {
-            return new Response<T>(message, false, errors);
+            return Response<T>.Failuer(message, errors);
         }
 
         public static Response<T> Success<T>(T data = default, int count = 0, string message = "OK")
         {
-            return new Response<T>(data, count, message, true, default);
+            return Response<T>.Success(data, count, message);
         }
 
         #endregion
@@ -42,7 +42,15 @@ namespace ProductCatalogue.Application.Common.Messaging
             Errors = errors;
         }
 
+        public static Response<T> Failuer(string message = "Failuer", Errors errors = default)
+        {
+            return new Response<T>(message, false, errors);
+        }
 
+        public static Response<T> Success(T data = default, int count = 0, string message = "OK")
+        {
+            return new Response<T>(data, count, message, true, default);
+        }
         #endregion
     }
 }

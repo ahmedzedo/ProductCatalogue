@@ -66,19 +66,19 @@ namespace Persistence.EF.IUnitOfWorks
             //    userId = HttpContext.Current.User.Identity.Name;
             //}
 
-            const string CreatedOnProperty = "CreatedOn";
-            const string ModifiedOnPropery = "UpdatedOn";
-            // const string IsActiveProperty = "IsActive";
+            //const string CreatedOnProperty = "CreatedOn";
+            //const string ModifiedOnPropery = "UpdatedOn";
+            //// const string IsActiveProperty = "IsActive";
             const string IdProperty = "Id";
 
-            IEnumerable<EntityEntry> entitiesWithCreatedOn =
-                this.Context.ChangeTracker.Entries()
-                    .Where(
-                        e => e.State == EntityState.Added && e.Entity.GetType().GetProperty(CreatedOnProperty) != null);
-            foreach (EntityEntry entry in entitiesWithCreatedOn)
-            {
-                entry.Property(CreatedOnProperty).CurrentValue = DateTime.Now;
-            }
+            //IEnumerable<EntityEntry> entitiesWithCreatedOn =
+            //    this.Context.ChangeTracker.Entries()
+            //        .Where(
+            //            e => e.State == EntityState.Added && e.Entity.GetType().GetProperty(CreatedOnProperty) != null);
+            //foreach (EntityEntry entry in entitiesWithCreatedOn)
+            //{
+            //    entry.Property(CreatedOnProperty).CurrentValue = DateTime.Now;
+            //}
 
             
 
@@ -94,14 +94,14 @@ namespace Persistence.EF.IUnitOfWorks
                 }
             }
 
-            IEnumerable<EntityEntry> entitiesWithModifiedOn =
-                this.Context.ChangeTracker.Entries()
-                    .Where(
-                        e => e.State == EntityState.Modified && e.Entity.GetType().GetProperty(ModifiedOnPropery) != null);
-            foreach (EntityEntry entry in entitiesWithModifiedOn)
-            {
-                entry.Property(ModifiedOnPropery).CurrentValue = DateTime.Now;
-            }
+            //IEnumerable<EntityEntry> entitiesWithModifiedOn =
+            //    this.Context.ChangeTracker.Entries()
+            //        .Where(
+            //            e => e.State == EntityState.Modified && e.Entity.GetType().GetProperty(ModifiedOnPropery) != null);
+            //foreach (EntityEntry entry in entitiesWithModifiedOn)
+            //{
+            //    entry.Property(ModifiedOnPropery).CurrentValue = DateTime.Now;
+            //}
 
             if (!string.IsNullOrEmpty(userId))
             {

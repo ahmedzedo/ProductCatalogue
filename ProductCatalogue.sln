@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C0112138-A504-4173-AF97-EEA92AAF459D}"
 EndProject
@@ -27,11 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Configuration.WebUI", "Configuration\Configuration.WebUI\Configuration.WebUI.csproj", "{7FC43EE9-BE63-4150-8D3D-35AABA5DD6CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Extension", "Common.Extension\Common.Extension.csproj", "{D5AAF4ED-7583-4886-BB65-FB775C07494B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common.Extension\Common.csproj", "{D5AAF4ED-7583-4886-BB65-FB775C07494B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.WebAPI", "Presentation.WebAPI\Presentation.WebAPI.csproj", "{FF68B15A-C11B-4786-AC1D-D1363789710C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.WebAPI", "Presentation.WebAPI\Presentation.WebAPI.csproj", "{FF68B15A-C11B-4786-AC1D-D1363789710C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configuration.WebAPI", "Configuration.WebAPI\Configuration.WebAPI.csproj", "{3DBD5123-C8CF-4CD8-B219-3E29CBCE9CEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Configuration.WebAPI", "Configuration.WebAPI\Configuration.WebAPI.csproj", "{3DBD5123-C8CF-4CD8-B219-3E29CBCE9CEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -22,7 +22,9 @@ namespace Common.Extension.Linq
             return (result, totalCount);
         }
 
-        public static async Task<(IEnumerable<T>, int totalCount)> ToPagedListAsync<T>(this IQueryable<T> query, int pageIndex, int pageSize) where T : class
+        public static async Task<(IEnumerable<T>, int totalCount)> ToPagedListAsync<T>(this IQueryable<T> query,
+                                                                                       int pageIndex,
+                                                                                       int pageSize) where T : class
         {
             int totalCount = query.Count();
             var result = await Task.FromResult(query.Skip(pageIndex * pageSize).Take(pageSize).ToList());
@@ -71,7 +73,7 @@ namespace Common.Extension.Linq
         #region distinct By
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            HashSet<TKey> seenKeys = new();
             foreach (TSource element in source)
             {
                 if (seenKeys.Add(keySelector(element)))

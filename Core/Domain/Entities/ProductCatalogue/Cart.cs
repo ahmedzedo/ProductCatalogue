@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Domain.Entities.ProductCatalogue
 {
-    public class Cart :AuditableEntity
+    public class Cart : AuditableEntity, IEntity<Guid>
     {
         public Cart()
         {

@@ -4,14 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Persistence.EF.IUnitOfWorks;
-using Persistence.EF.Repositories.Packages;
 using Persistence.EF.Repositories.ProductCatalogue.DataQueries;
 using ProductCatalogue.Application.Common.Behaviours;
 using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
 using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
-using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using ProductCatalogue.Persistence.EF;
 using ProductCatalogue.Persistence.EF.Repositories;
 using System;
@@ -34,11 +31,11 @@ namespace ProductCatalogue.Configuration.WebUI
         }
         public static IServiceCollection AddWebDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ICartRepository, CartRepository>();
-            services.AddScoped<ICartItemRepository, CartItemRepository>();
+            //services.AddScoped<IProductRepository, ProductRepository>();
+            //services.AddScoped<ICartRepository, CartRepository>();
+            //services.AddScoped<ICartItemRepository, CartItemRepository>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddValidatorsFromAssembly(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.FullName.Contains("ProductCatalogue.Application"))
                             .FirstOrDefault());

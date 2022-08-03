@@ -57,12 +57,7 @@
         {
 
         }
-        //public PagedListRequest(int pageSize = 10, int pagePerPages = 10, string userName = default)
-        //    : base(userName)
-        //{
-        //    this.PageSize = pageSize;
-        //    this.PagePerPages = pagePerPages;
-        //}
+        
         #endregion
     }
 }

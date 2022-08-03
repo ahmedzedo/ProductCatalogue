@@ -5,7 +5,6 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using ProductCatalogue.Application.Common.Exceptions;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem

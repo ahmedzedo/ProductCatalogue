@@ -5,7 +5,6 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using System.Linq;
 using System.Collections.Generic;
 using ProductCatalogue.Domain.Entities.Users;

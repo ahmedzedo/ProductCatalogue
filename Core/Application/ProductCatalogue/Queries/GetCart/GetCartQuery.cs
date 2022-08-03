@@ -1,7 +1,6 @@
 ﻿using ProductCatalogue.Application.Common.Exceptions;
 using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
-using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using System;
 using System.Collections.Generic;
@@ -24,17 +23,15 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
     public class GetCartQueryHandler : BaseQueryHandler<GetCartQuery, Cart>
     {
         #region Dependencies
-        //private ICartRepository CartRepository { get; set; }
-        //private IDataQuery<Cart> CartDataQuery => (IDataQuery<Cart>)ServiceProvider.GetService(typeof(IDataQuery<Cart>));
+       
         public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
         #endregion
 
         #region Constructor
-        public GetCartQueryHandler(IServiceProvider serviceProvider/*, IUnitOfWork unitOfWork, ICartRepository cartRepository*/)
+        public GetCartQueryHandler(IServiceProvider serviceProvider)
            : base(serviceProvider)
         {
-           // CartRepository = cartRepository;
         }
         #endregion
 

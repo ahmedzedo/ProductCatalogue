@@ -1,7 +1,6 @@
 ﻿using ProductCatalogue.Application.Common.Exceptions;
 using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
-using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

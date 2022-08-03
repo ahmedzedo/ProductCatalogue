@@ -9,13 +9,19 @@
 
   <ItemGroup>
     <Compile Remove="Common\Security\**" />
+    <Compile Remove="ProductCatalogue\IRepositories\**" />
     <EmbeddedResource Remove="Common\Security\**" />
+    <EmbeddedResource Remove="ProductCatalogue\IRepositories\**" />
     <None Remove="Common\Security\**" />
+    <None Remove="ProductCatalogue\IRepositories\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Common\Behaviours\PerformanceBehaviour.cs" />
     <Compile Remove="Common\Interfaces\Account\IIdentityService.cs" />
+    <Compile Remove="Common\Interfaces\Persistence\IReadOnlyRepository.cs" />
+    <Compile Remove="Common\Interfaces\Persistence\IRepository.cs" />
+    <Compile Remove="Common\Interfaces\Persistence\IUnitOfWork.cs" />
     <Compile Remove="Common\Models\DomainEventNotification.cs" />
     <Compile Remove="DependencyInjection.cs" />
   </ItemGroup>

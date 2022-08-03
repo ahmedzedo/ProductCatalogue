@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 
 namespace ProductCatalogue.Application.Common.Messaging
 {

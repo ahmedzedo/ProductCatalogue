@@ -1,7 +1,6 @@
 ﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
 using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
-using ProductCatalogue.Application.ProductCatalogue.IRepositories;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using System;
 using System.Collections.Generic;

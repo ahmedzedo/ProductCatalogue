@@ -6,7 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="IUnitOfWorks\PackageUnitOfWork.cs--" />
+    <Compile Remove="IUnitOfWorks\**" />
+    <EmbeddedResource Remove="IUnitOfWorks\**" />
+    <None Remove="IUnitOfWorks\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Repositories\ProductCatalogue\CartItemRepository.cs" />
+    <Compile Remove="Repositories\ProductCatalogue\CartRepository.cs" />
+    <Compile Remove="Repositories\ProductCatalogue\ProductRepository.cs" />
+    <Compile Remove="Repositories\Repository.cs" />
   </ItemGroup>
 
   <ItemGroup>

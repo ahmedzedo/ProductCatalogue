@@ -126,9 +126,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// </returns>
         public virtual bool Delete(T entity)
         {
-             DbSet.Remove(entity);
-            
-            return true; //Context.Entry(deletedEntity.Entity).State == EntityState.Deleted;
+            return DbSet.Remove(entity).State == EntityState.Deleted;
         }
 
         /// <summary>

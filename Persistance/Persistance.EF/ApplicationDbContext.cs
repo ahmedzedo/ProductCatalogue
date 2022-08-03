@@ -59,6 +59,7 @@ namespace ProductCatalogue.Persistence.EF
         #region Save Changes
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
+            const string IDProperty = "Id";
             foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
             {
                 switch (entry.State)
@@ -66,6 +67,10 @@ namespace ProductCatalogue.Persistence.EF
                     case EntityState.Added:
                         entry.Entity.CreatedBy = _currentUserService.UserId;
                         entry.Entity.CreatedOn = DateTime.Now;
+                        if (entry.Entity.GetType().GetProperty(IDProperty) != null)
+                        {
+
+                        }
                         break;
 
                     case EntityState.Modified:

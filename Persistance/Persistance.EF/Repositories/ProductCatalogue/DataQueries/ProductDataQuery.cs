@@ -14,7 +14,7 @@ namespace Persistence.EF.Repositories.ProductCatalogue.DataQueries
     public class ProductDataQuery : DataQuery<Product>, IProductDataQuery
     {
         #region Constructor
-        public ProductDataQuery(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
+        public ProductDataQuery(DbSet<Product> products) : base(products) 
         {
         } 
         #endregion

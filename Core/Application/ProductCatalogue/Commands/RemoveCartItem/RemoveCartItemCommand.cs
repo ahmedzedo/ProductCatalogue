@@ -22,32 +22,34 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
     public class RemoveCartItemCommandHandler : BaseCommandHandler<RemoveCartItemCommand, bool>
     {
         #region Dependencies
-        public ICartItemRepository CartItemRepository { get; set; }
-        public IUnitOfWork UnitOfWork { get; set; }
+        //public ICartItemRepository CartItemRepository { get; set; }
+        //public IUnitOfWork UnitOfWork { get; set; }
+        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
+
         #endregion
 
         #region Constructor
-        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider, IUnitOfWork unitOfWork, ICartItemRepository cartItemRepository)
+        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider/*, IUnitOfWork unitOfWork, ICartItemRepository cartItemRepository*/)
            : base(serviceProvider)
         {
-            UnitOfWork = unitOfWork;
-            CartItemRepository = cartItemRepository;
+            //UnitOfWork = unitOfWork;
+            //CartItemRepository = cartItemRepository;
         }
         #endregion
 
         #region Request Handle
         public async override Task<IResponse<bool>> HandleRequest(RemoveCartItemCommand request, CancellationToken cancellationToken)
         {
-            var item = await CartItemRepository.GetByIdAsync(request.Id);
+            var item = await DbContext.CartItemQuery.GetByIdAsync(request.Id);
 
             if (item == null)
             {
                 throw new NotFoundException("this item not found", request.Id);
             }
 
-            CartItemRepository.Delete(item);
+            DbContext.CartItemQuery.Delete(item);
 
-            int rowsCount = await UnitOfWork.SaveAsync(cancellationToken);
+            int rowsCount = await DbContext.SaveChangesAsync(cancellationToken);
 
             return rowsCount > 0 ? Response.Success<bool>() : Response.Failuer<bool>("Unexpected error");
         }

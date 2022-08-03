@@ -17,23 +17,6 @@ namespace Persistence.EF.Repositories.Packages
            
         }
         #endregion
-        public async Task<Cart> CreateDefaultCart()
-        {
-            var cart = new Cart
-            {
-                Items = new List<CartItem>(),
-                User = new User
-                {
-                    Id = Guid.NewGuid(),
-                    UserName = "admin",
-                    Email = "admin@localhost.com",
-                    Gender = true,
-                    IsDeleted = false
-                }
-            };
-            await this.DbSet.AddAsync(cart);
-
-            return cart;
-        }
+      
     }
 }

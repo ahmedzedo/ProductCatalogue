@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using static Common.Extension.Linq.IQueryableExtension;
+using ProductCatalogue.Domain.Entities.ProductCatalogue;
 
 namespace ProductCatalogue.Persistence.EF.Repositories
 {
@@ -20,19 +21,187 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         #endregion
 
         #region Constructors
-        public DataQuery(ApplicationDbContext applicationDbContext)
+        public DataQuery(DbSet<T> dbSet)
         {
-            this.DbSet = applicationDbContext.Set<T>();
+            this.DbSet = dbSet;
             this.DbQuery = DbSet.AsNoTracking().AsQueryable();
+          //  ResetQuery();
         }
         #endregion
 
-        #region IDataQuery<T> Implementation
+        //protected void ResetQuery()
+        //{
+        //    this.DbQuery = DbSet.AsNoTracking().AsQueryable();
+        //}
+
+        #region Write Methods 
+        /// <summary>
+        /// The add.
+        /// </summary>
+        /// <param name="entity">
+        /// The entity.
+        /// </param>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        public T Add(T entity)
+        {
+            return  DbSet.Add(entity).Entity;
+        }
+
+        /// <summary>
+        /// The add.
+        /// </summary>
+        /// <param name="entities">
+        /// The entities.
+        /// </param>
+        public void Add(IEnumerable<T> entities)
+        {
+            DbSet.AddRange(entities);
+        }
+
+        /// <summary>
+        /// The add async.
+        /// </summary>
+        /// <param name="t">
+        /// The t.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        public virtual async Task<T> AddAsync(T entity)
+        {
+            var addedEntity = await DbSet.AddAsync(entity);
+
+            return addedEntity.Entity;
+        }
+
+        /// <summary>
+        /// The add.
+        /// </summary>
+        /// <param name="entities">
+        /// The entities.
+        /// </param>
+        public void AddAsync(IEnumerable<T> entities)
+        {
+            DbSet.AddRangeAsync(entities);
+        }
+
+        /// <summary>
+        /// Update by Specific Object 
+        /// </summary>
+        /// <param name="id">Key</param>
+        /// <param name="t"> updated Object</param>
+        public virtual void Update(object id, T entity)
+        {
+            _ = DbSet.Find(id);
+            
+            DbSet.Update(entity);
+        }
+
+        /// <summary>
+        /// Updated
+        /// </summary>
+        /// <param name="entityToUpdate"> Updated Object</param>
+        public virtual void Update(T updatedEntity)
+        {
+            //DbSet.Attach(entityToUpdate);
+            //Context.Entry(entityToUpdate).State = EntityState.Modified;
+            if (!DbSet.Contains(updatedEntity))
+            {
+                DbSet.Attach(updatedEntity);
+            }
+
+            DbSet.Update(updatedEntity);
+        }
+
+        /// <summary>
+        /// The delete.
+        /// </summary>
+        /// <param name="entity">
+        /// The entity.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public virtual bool Delete(T entity)
+        {
+             DbSet.Remove(entity);
+            
+            return true; //Context.Entry(deletedEntity.Entity).State == EntityState.Deleted;
+        }
+
+        /// <summary>
+        /// The delete.
+        /// </summary>
+        /// <param name="entities">
+        /// The entities.
+        /// </param>
+        public virtual void Delete(IEnumerable<T> entities)
+        {
+            DbSet.RemoveRange(entities);
+        }
+
+        /// <summary>
+        /// The delete by id.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public virtual bool DeleteById(object id)
+        {
+            var entity = DbSet.Find(id);
+
+            return Delete(entity);
+        }
+
+
+        #endregion
+
+        #region Read Methods
+
+        /// <summary>
+        /// The get by id.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        public T GetById(object id)
+        {
+            return this.DbSet.Find(id);
+        }
+
+        /// <summary>
+        /// The get by id async.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        public async Task<T> GetByIdAsync(object id)
+        {
+            return await this.DbSet.FindAsync(id);
+        }
+
+        /// <summary>
+        /// Track the eniities of the query
+        /// </summary>
+        /// <returns></returns>
         public virtual IDataQuery<T> AsTracking()
         {
             this.DbQuery = this.DbQuery.AsTracking();
+
             return this;
-        }                 
+        }
+
         /// <summary>
         /// The where.
         /// </summary>
@@ -43,12 +212,11 @@ namespace ProductCatalogue.Persistence.EF.Repositories
             if (filter != null)
             {
                 this.DbQuery = this.DbQuery.Where(filter);
-                //var x = this.DbQuery.ToQueryString();
             }
+
             return this;
         }
 
-        
         /// <summary>
         /// The WhereIf to assert from condition before applying filter
         /// </summary>
@@ -61,6 +229,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
             {
                 this.DbQuery = this.DbQuery.Where(filter);
             }
+
             return this;
         }
 
@@ -118,7 +287,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual T FirstOrDefault(Expression<Func<T, bool>> predicate = null)
         {
             var result = predicate != null ? this.DbQuery.FirstOrDefault(predicate) : this.DbQuery.FirstOrDefault();
-            this.DbQuery = default;
 
             return result;
         }
@@ -130,7 +298,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null)
         {
             var result = predicate != null ? this.DbQuery.FirstOrDefault(predicate) : this.DbQuery.FirstOrDefault();
-            this.DbQuery = default;
 
             return await Task.FromResult(result);
         }
@@ -141,7 +308,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual bool Any()
         {
             var result = this.DbQuery.Any();
-            this.DbQuery = default;
 
             return result;
         }
@@ -153,7 +319,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<bool> AnyAsync()
         {
             var result = await this.DbQuery.AnyAsync();
-            this.DbQuery = default;
 
             return result;
         }
@@ -166,7 +331,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
             var result = await this.DbQuery.AnyAsync(expression);
-            this.DbQuery = default;
 
             return result;
         }
@@ -179,7 +343,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual List<T> Top(int count)
         {
             var result = this.DbQuery.Take(count).ToList();
-            DbQuery = null;
 
             return result;
         }
@@ -192,7 +355,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<List<T>> TopAsync(int count)
         {
             var result = await Task.FromResult(this.DbQuery.Take(count).ToList());
-            DbQuery = null;
 
             return result;
         }
@@ -205,7 +367,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual List<T> Last(int count)
         {
             var result = this.DbQuery.TakeLast(count).ToList();
-            this.DbQuery = default;
 
             return result;
         }
@@ -217,7 +378,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<List<T>> LastAsync(int count)
         {
             var result = await Task.FromResult(this.DbQuery.TakeLast(count).ToList());
-            this.DbQuery = default;
 
             return result;
         }
@@ -229,7 +389,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual int Count()
         {
             var result = this.DbQuery.Count();
-            this.DbQuery = default;
+            //ResetQuery();
 
             return result;
         }
@@ -241,7 +401,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<int> CountAsync()
         {
             var result = await Task.FromResult(this.DbQuery.Count());
-            this.DbQuery = default;
 
             return result;
         }
@@ -253,7 +412,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual T Max()
         {
             var result = this.DbQuery.Max();
-            this.DbQuery = default;
 
             return result;
         }
@@ -265,7 +423,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<T> MaxAsync()
         {
             var result = await Task.FromResult(this.DbQuery.Max());
-            this.DbQuery = default;
 
             return result;
         }
@@ -277,7 +434,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual T Min()
         {
             var result = this.DbQuery.Min();
-            this.DbQuery = default;
 
             return result;
         }
@@ -289,7 +445,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<T> MinAsync()
         {
             var result = await Task.FromResult(this.DbQuery.Min());
-            this.DbQuery = default;
 
             return result;
         }
@@ -301,7 +456,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual List<T> ToList()
         {
             var result = this.DbQuery.ToList();
-            DbQuery = null;
 
             return result;
         }
@@ -313,7 +467,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual IEnumerable<T> AsEnumerable()
         {
             var result = this.DbQuery.AsEnumerable();
-            DbQuery = null;
 
             return result;
         }
@@ -325,7 +478,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<List<T>> ToListAsync()
         {
             var result = await Task.FromResult(this.DbQuery.ToList());
-            DbQuery = null;
 
             return result;
         }
@@ -337,7 +489,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual IAsyncEnumerable<T> AsAsyncEnumerable()
         {
             var result = this.DbQuery.AsAsyncEnumerable();
-            DbQuery = null;
 
             return result;
         }
@@ -352,8 +503,6 @@ namespace ProductCatalogue.Persistence.EF.Repositories
             int totalCount = this.DbQuery.Count();
             var result = this.DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
-            DbQuery = null;
-
             return (result, totalCount);
         }
 
@@ -366,9 +515,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual async Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize)
         {
             int totalCount = this.DbQuery.Count();
-            var result = await Task.FromResult(this.DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToList());
-
-            DbQuery = null;
+            var result = await this.DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
 
             return (result, totalCount);
         }

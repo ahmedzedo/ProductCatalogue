@@ -4,8 +4,9 @@ namespace ProductCatalogue.Application.Common.Exceptions
 {
     public class NotFoundException : Exception
     {
+        #region Consructors
         public NotFoundException()
-            : base()
+           : base()
         {
         }
 
@@ -22,6 +23,7 @@ namespace ProductCatalogue.Application.Common.Exceptions
         public NotFoundException(string name, object key)
             : base($"Entity \"{name}\" ({key}) was not found.")
         {
-        }
+        } 
+        #endregion
     }
 }

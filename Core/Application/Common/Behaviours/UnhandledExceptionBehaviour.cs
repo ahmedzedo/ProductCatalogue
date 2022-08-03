@@ -9,13 +9,19 @@ namespace ProductCatalogue.Application.Common.Behaviours
 {
     public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
+        #region Dependencies
         private readonly ILogger<TRequest> _logger;
+        #endregion
+
+        #region Constructor
 
         public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
         {
             _logger = logger;
         }
+        #endregion
 
+        #region Handel
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             Debug.WriteLine($"UnhandledException ");
@@ -32,6 +38,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
 
                 throw;
             }
-        }
+        } 
+        #endregion
     }
 }

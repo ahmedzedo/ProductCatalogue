@@ -13,13 +13,18 @@ namespace ProductCatalogue.Application.Common.Behaviours
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IBaseRequest
     {
+        #region Dependencies
         private readonly IEnumerable<IValidator<TRequest>> _validators;
+        #endregion
 
+        #region Constructors
         public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
         {
             _validators = validators;
         }
+        #endregion
 
+        #region Handle
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             Debug.WriteLine($"validation Pibline ");
@@ -35,6 +40,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
                     throw new ValidationException(failures);
             }
             return await next();
-        }
+        } 
+        #endregion
     }
 }

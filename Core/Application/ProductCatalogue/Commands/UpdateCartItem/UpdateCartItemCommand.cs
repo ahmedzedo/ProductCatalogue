@@ -22,26 +22,28 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
     public class UpdateCartItemCommandHandler : BaseCommandHandler<UpdateCartItemCommand, bool>
     {
         #region Dependencies
-        private ICartItemRepository CartItemRepository { get; }
-        private IUnitOfWork UnitOfWork { get; }
+        //private ICartItemRepository CartItemRepository { get; }
+        //private IUnitOfWork UnitOfWork { get; }
+        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
+
         #endregion
 
         #region Constructor
         public UpdateCartItemCommandHandler(
-            IServiceProvider serviceProvider,
-            IUnitOfWork unitOfWork,
-            ICartItemRepository cartItemRepository)
+            IServiceProvider serviceProvider//,
+            //IUnitOfWork unitOfWork,
+            /*ICartItemRepository cartItemRepository*/)
            : base(serviceProvider)
         {
-            UnitOfWork = unitOfWork;
-            CartItemRepository = cartItemRepository;
+            //UnitOfWork = unitOfWork;
+            //CartItemRepository = cartItemRepository;
         }
         #endregion
 
         #region RequestHandle
         public override async Task<IResponse<bool>> HandleRequest(UpdateCartItemCommand request, CancellationToken cancellationToken)
         {
-            var item = await CartItemRepository.GetByIdAsync(request.Id);
+            var item = await DbContext.CartItemQuery.GetByIdAsync(request.Id);
 
             if (item == null)
             {
@@ -49,8 +51,8 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
 
             }
             item.Count = request.Count;
-            CartItemRepository.Update(item);
-            int rows = await UnitOfWork.SaveAsync(cancellationToken);
+            DbContext.CartItemQuery.Update(item);
+            int rows = await DbContext.SaveChangesAsync(cancellationToken);
 
             return rows > 0 ? Response.Success(true) : Response.Failuer<bool>("Unexpected Expetion");
 

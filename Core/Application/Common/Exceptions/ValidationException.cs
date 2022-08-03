@@ -8,8 +8,13 @@ namespace ProductCatalogue.Application.Common.Exceptions
 {
     public class ValidationException : Exception
     {
+        #region Properties
+        public Errors Errors { get; } 
+        #endregion
+
+        #region Constructors
         public ValidationException()
-            : base("One or more validation failures have occurred.")
+           : base("One or more validation failures have occurred.")
         {
             Errors = new Errors();
         }
@@ -20,8 +25,9 @@ namespace ProductCatalogue.Application.Common.Exceptions
             Errors.AddErrors(failures
                 .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
                 .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray()));
-        }
+        } 
+        #endregion
 
-        public Errors Errors { get; }
+       
     }
 }

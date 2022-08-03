@@ -1,21 +1,23 @@
-﻿using ProductCatalogue.Application.Common.Interfaces;
-using ProductCatalogue.Application.Common.Interfaces.Account;
-using ProductCatalogue.Domain.Common;
-using ProductCatalogue.Infrastructure.Identity;
-using IdentityServer4.EntityFramework.Options;
+﻿using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Persistence.EF.Repositories.ProductCatalogue.DataQueries;
+using ProductCatalogue.Application.Common.Interfaces.Account;
+using ProductCatalogue.Application.Common.Interfaces.Persistence;
+using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
+using ProductCatalogue.Domain.Common;
+using ProductCatalogue.Domain.Entities.ProductCatalogue;
+using ProductCatalogue.Infrastructure.Identity;
+using ProductCatalogue.Persistence.EF.Repositories;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using ProductCatalogue.Domain.Entities.ProductCatalogue;
 
 namespace ProductCatalogue.Persistence.EF
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
     {
         #region Properties
         private readonly ICurrentUserService _currentUserService;
@@ -33,9 +35,16 @@ namespace ProductCatalogue.Persistence.EF
         #endregion
 
         #region DB Sets
-        public DbSet<Product> Products { get; set; }
-        public DbSet<CartItem> CartItems { get; set; }
-        public DbSet<Cart> Carts { get; set; }
+        protected internal DbSet<Product> Products { get; set; }
+        protected internal DbSet<CartItem> CartItems { get; set; }
+        protected internal DbSet<Cart> Carts { get; set; }
+
+        #endregion
+
+        #region Data Queries
+        public IProductDataQuery ProductQuery { get => new ProductDataQuery(this.Products); }
+        public IDataQuery<CartItem> CartItemQuery { get => new DataQuery<CartItem>(this.CartItems); }
+        public IDataQuery<Cart> CartQuery { get => new DataQuery<Cart>(this.Carts); }
         #endregion
 
         #region On Model Creating

@@ -26,7 +26,8 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
     {
         #region Dependencies
 
-        public IProductDataQuery ProductDataQuery => (IProductDataQuery)ServiceProvider.GetService(typeof(IProductDataQuery));
+       // public IProductDataQuery ProductDataQuery => (IProductDataQuery)ServiceProvider.GetService(typeof(IProductDataQuery));
+        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
         #endregion
 
         #region Constructor
@@ -40,17 +41,22 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
         #region Handel
         public async override Task<IResponse<IEnumerable<Product>>> HandleRequest(GetPagedProductQuery request, CancellationToken cancellationToken)
         {
-            (IEnumerable<Product> items, int totalCount) = await ProductDataQuery
+            (IEnumerable<Product> items, int totalCount) = await DbContext.ProductQuery
                 .IncludeCartItems()
                 .WhereIf(!string.IsNullOrEmpty(request.Name), p => p.Name.Contains(request.Name))
                 .WhereIf(!string.IsNullOrEmpty(request.Description), p => p.Description.Contains(request.Description))
                 .OrderBy(p => p.OrderByDescending(o => o.CreatedOn))
                 .ToPagedListAsync(request.PageIndex, request.PageSize);
+
+            IProductDataQuery productDataQuery = DbContext.ProductQuery;
+         var x =   productDataQuery.Where(p => p.Name == "product1")
+                            .FirstOrDefault();
+
             Debug.WriteLine("in request");
 
             return Response.Success(items, totalCount);
         }
         #endregion
-    } 
+    }
     #endregion
 }

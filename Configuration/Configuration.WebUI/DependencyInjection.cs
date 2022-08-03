@@ -45,12 +45,13 @@ namespace ProductCatalogue.Configuration.WebUI
             services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.FullName.Contains("ProductCatalogue.Application"))
                             .FirstOrDefault());
-            services.AddTransient(typeof(IDataQuery<>), typeof(DataQuery<>));
+            //services.AddTransient(typeof(IDataQuery<>), typeof(DataQuery<>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddTransient(typeof(IRequestPipeline<,>), typeof(RequestPipeline<,>));
             services.AddTransient(typeof(IRequestPipeline<,>), typeof(LoggerPipline<,>));
-            services.AddTransient<IProductDataQuery, ProductDataQuery>();
+            //services.AddTransient<IProductDataQuery, ProductDataQuery>();
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
          
             return services;
         }

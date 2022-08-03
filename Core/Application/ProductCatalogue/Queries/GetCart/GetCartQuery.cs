@@ -24,15 +24,17 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
     public class GetCartQueryHandler : BaseQueryHandler<GetCartQuery, Cart>
     {
         #region Dependencies
-        private ICartRepository CartRepository { get; set; }
-        private IDataQuery<Cart> CartDataQuery => (IDataQuery<Cart>)ServiceProvider.GetService(typeof(IDataQuery<Cart>));
+        //private ICartRepository CartRepository { get; set; }
+        //private IDataQuery<Cart> CartDataQuery => (IDataQuery<Cart>)ServiceProvider.GetService(typeof(IDataQuery<Cart>));
+        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
+
         #endregion
 
         #region Constructor
-        public GetCartQueryHandler(IServiceProvider serviceProvider, IUnitOfWork unitOfWork, ICartRepository cartRepository)
+        public GetCartQueryHandler(IServiceProvider serviceProvider/*, IUnitOfWork unitOfWork, ICartRepository cartRepository*/)
            : base(serviceProvider)
         {
-            CartRepository = cartRepository;
+           // CartRepository = cartRepository;
         }
         #endregion
 
@@ -41,7 +43,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
         {
             string includeEntities = $"Items.Product.{nameof(Domain.Entities.ProductCatalogue.Product)}";
 
-            var cart = await CartDataQuery.Include("Items")
+            var cart = await DbContext.CartQuery.Include("Items")
                                           .Include("Items.Product")
                                           .FirstOrDefaultAsync();
 

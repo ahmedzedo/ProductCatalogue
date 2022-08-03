@@ -6,6 +6,6 @@ namespace ProductCatalogue.Application.ProductCatalogue.IRepositories
 {
     public interface ICartRepository : IRepository<Cart>
     {
-        Task<Cart> CreateDefaultCart();
+       // Task<Cart> CreateDefaultCart();
     }
 }

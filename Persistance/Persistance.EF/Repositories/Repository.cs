@@ -120,6 +120,11 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         {
             //DbSet.Attach(entityToUpdate);
             //Context.Entry(entityToUpdate).State = EntityState.Modified;
+            if (!DbSet.Contains(updatedEntity))
+            {
+                DbSet.Attach(updatedEntity);
+            }
+            
             DbSet.Update(updatedEntity);
         }
 
@@ -171,7 +176,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         #region Read Method
         public IDataQuery<T> GetQuery()
         {
-            return new DataQuery<T>(Context);//DbSet.AsNoTracking().AsQueryable());
+            return new DataQuery<T>(DbSet);//DbSet.AsNoTracking().AsQueryable());
         }
         #endregion
 

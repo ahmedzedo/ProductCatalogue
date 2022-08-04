@@ -4,9 +4,6 @@ using ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart;
 using ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem;
 using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem;
 using ProductCatalogue.Application.ProductCatalogue.Queries.GetCart;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Presentation.WebAPI.Controllers

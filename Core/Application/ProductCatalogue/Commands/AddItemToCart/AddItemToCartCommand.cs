@@ -1,18 +1,17 @@
 ﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
-using MediatR;
+using ProductCatalogue.Domain.Entities.Users;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
-using ProductCatalogue.Domain.Entities.Users;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
 {
     #region Request
-    public class AddItemToCartCommand : BaseRequest<Guid>
+    public class AddItemToCartCommand : BaseCommand<Guid>
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
@@ -21,42 +20,33 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
     #endregion
 
     #region Rquest Handler
-    public class AddItemToCartCommandHandler : AbstractBaseRequestHandler<AddItemToCartCommand, Guid>
+    public class AddItemToCartCommandHandler : BaseCommandHandler<AddItemToCartCommand, Guid>
     {
         #region Dependencies
-        // public ICartItemRepository CartItemRepository { get; set; }
-        //public ICartRepository CartRepository { get; set; }
-        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
-        //public IDataQuery<Cart> CartDataQurey => (IDataQuery<Cart>)ServiceProvider.GetService(typeof(IDataQuery<Cart>));
-        //public IUnitOfWork UnitOfWork { get; set; }
+        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
         #endregion
 
         #region Constructor
-        public AddItemToCartCommandHandler(IServiceProvider serviceProvider
-                                           //,IUnitOfWork unitOfWork,
-                                           //ICartItemRepository cartItemRepository,
-                                           /*ICartRepository cartRepository*/)
+        public AddItemToCartCommandHandler(IServiceProvider serviceProvider)
            : base(serviceProvider)
         {
-            //UnitOfWork = unitOfWork;
-           // CartItemRepository = cartItemRepository;
-            //CartRepository = cartRepository;
+
         }
         #endregion
 
         #region Request Handle
-        public async override Task<Guid> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
+        public async override Task<IResponse<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
             var cart = await DbContext.CartQuery.AsTracking().Include("Items").FirstOrDefaultAsync();
-            
+
             if (cart == null)
             {
                 cart = await CreateDefaultCart();
                 await DbContext.SaveChangesAsync(cancellationToken);
             }
 
-            var item =  cart.Items.Where(c=> c.ProductId == request.ProductId).FirstOrDefault();
+            var item = cart.Items.Where(c => c.ProductId == request.ProductId).FirstOrDefault();
 
             if (item == null)
             {
@@ -66,7 +56,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
                     ProductId = request.ProductId,
                     Count = request.Count,
                 };
-               cart.Items.Add(item);
+                cart.Items.Add(item);
             }
             else
             {
@@ -75,7 +65,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
             }
             await DbContext.SaveChangesAsync(cancellationToken);
 
-            return item.Id;//Response.Success(item.Id);
+            return Response.Success(item.Id);
 
         }
 

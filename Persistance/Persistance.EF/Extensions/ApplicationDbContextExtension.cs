@@ -1,5 +1,5 @@
-﻿using ProductCatalogue.Persistence.EF;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductCatalogue.Persistence.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

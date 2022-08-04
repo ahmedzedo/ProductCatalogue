@@ -1,6 +1,7 @@
 ﻿using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
 using Persistence.EF.Repositories.ProductCatalogue.DataQueries;
 using ProductCatalogue.Application.Common.Interfaces.Account;
@@ -11,6 +12,7 @@ using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using ProductCatalogue.Infrastructure.Identity;
 using ProductCatalogue.Persistence.EF.Repositories;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,30 +61,46 @@ namespace ProductCatalogue.Persistence.EF
         #region Save Changes
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            const string IDProperty = "Id";
-            foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
+            UpdateEntitiesShadowProperties();
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void UpdateEntitiesShadowProperties()
+        {
+            base.ChangeTracker.Entries<AuditableEntity>()
+                              .Where(e => e.State is EntityState.Added or EntityState.Modified)
+                              .ToList()
+                              .ForEach(entry => UpdateEntityShadowProperties(entry));
+        }
+
+        private void UpdateEntityShadowProperties(EntityEntry<AuditableEntity> entry)
+        {
+            switch (entry.State)
             {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedBy = _currentUserService.UserId;
-                        entry.Entity.CreatedOn = DateTime.Now;
-                        if (entry.Entity.GetType().GetProperty(IDProperty) != null)
-                        {
+                case EntityState.Added:
+                    entry.Entity.CreatedBy = _currentUserService.UserId;
+                    entry.Entity.CreatedOn = DateTime.Now;
+                    const string IdProperty = "Id";
 
-                        }
-                        break;
-
-                    case EntityState.Modified:
-                        entry.Entity.LastUpdatedBy = _currentUserService.UserId;
-                        entry.Entity.LastUpdatedOn = DateTime.Now;
-                        break;
-                }
+                    if (entry.Entity.GetType().GetProperty(IdProperty) != null)
+                    {
+                        SetNewGuidEntityId(IdProperty, entry);
+                    }
+                    break;
+                case EntityState.Modified:
+                    entry.Entity.LastUpdatedBy = _currentUserService.UserId;
+                    entry.Entity.LastUpdatedOn = DateTime.Now;
+                    break;
             }
+        }
 
-
-            var result = await base.SaveChangesAsync(cancellationToken);
-            return result;
+        private static void SetNewGuidEntityId(string IdProperty, EntityEntry<AuditableEntity> entry)
+        {
+            if (Guid.TryParse(entry.Property(IdProperty).CurrentValue.ToString(), out Guid id) && id == Guid.Empty)
+            {
+                entry.Property(IdProperty).CurrentValue = Guid.NewGuid();
+            }
         }
 
         #endregion

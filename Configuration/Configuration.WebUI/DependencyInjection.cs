@@ -3,17 +3,12 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Persistence.EF.Repositories.ProductCatalogue.DataQueries;
 using ProductCatalogue.Application.Common.Behaviours;
 using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
-using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
 using ProductCatalogue.Persistence.EF;
-using ProductCatalogue.Persistence.EF.Repositories;
 using System;
 using System.Linq;
-using System.Reflection;
 
 namespace ProductCatalogue.Configuration.WebUI
 {
@@ -21,7 +16,7 @@ namespace ProductCatalogue.Configuration.WebUI
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
@@ -49,7 +44,7 @@ namespace ProductCatalogue.Configuration.WebUI
             services.AddTransient(typeof(IRequestPipeline<,>), typeof(LoggerPipline<,>));
             //services.AddTransient<IProductDataQuery, ProductDataQuery>();
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-         
+
             return services;
         }
     }

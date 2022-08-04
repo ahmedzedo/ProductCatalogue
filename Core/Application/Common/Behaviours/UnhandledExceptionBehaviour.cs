@@ -38,7 +38,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
 
                 throw;
             }
-        } 
+        }
         #endregion
     }
 }

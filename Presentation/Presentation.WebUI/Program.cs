@@ -1,14 +1,11 @@
-using ProductCatalogue.Persistence.EF;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Persistence.EF;
+using ProductCatalogue.Persistence.EF;
 using System;
 using System.Threading.Tasks;
-using Persistence.EF;
-using Microsoft.AspNetCore.Identity;
-using ProductCatalogue.Infrastructure.Identity;
 
 namespace ProductCatalogue.Presentation.WebUI
 {
@@ -17,7 +14,7 @@ namespace ProductCatalogue.Presentation.WebUI
         public async static Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-                //.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+            //.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
 
             using (var scope = host.Services.CreateScope())
             {
@@ -27,7 +24,7 @@ namespace ProductCatalogue.Presentation.WebUI
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.EnsureCreated();
-                  
+
                     await ApplicationDbContextSeed.SeedSampleDataAsync(context);
                 }
                 catch (Exception ex)
@@ -36,7 +33,7 @@ namespace ProductCatalogue.Presentation.WebUI
 
                     logger.LogError(ex, "An error occurred while migrating or seeding the database.");
 
-                  throw;
+                    throw;
                 }
             }
 

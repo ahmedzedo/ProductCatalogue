@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Extension.Linq
 {
-   public static class ExpressionExtension
+    public static class ExpressionExtension
     {
         public static string PropertyName<T>(this Expression<Func<T, object>> expression)
         {

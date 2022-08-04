@@ -2,9 +2,6 @@
 using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,18 +18,16 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
     public class RemoveCartItemCommandHandler : BaseCommandHandler<RemoveCartItemCommand, bool>
     {
         #region Dependencies
-        //public ICartItemRepository CartItemRepository { get; set; }
-        //public IUnitOfWork UnitOfWork { get; set; }
+
         public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
         #endregion
 
         #region Constructor
-        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider/*, IUnitOfWork unitOfWork, ICartItemRepository cartItemRepository*/)
+        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider)
            : base(serviceProvider)
         {
-            //UnitOfWork = unitOfWork;
-            //CartItemRepository = cartItemRepository;
+
         }
         #endregion
 
@@ -54,6 +49,6 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
         }
         #endregion
     }
-} 
+}
 #endregion
 

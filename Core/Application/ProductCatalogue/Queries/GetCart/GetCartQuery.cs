@@ -1,11 +1,8 @@
-﻿using ProductCatalogue.Application.Common.Exceptions;
-using ProductCatalogue.Application.Common.Interfaces.Persistence;
+﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +20,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
     public class GetCartQueryHandler : BaseQueryHandler<GetCartQuery, Cart>
     {
         #region Dependencies
-       
+
         public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
         #endregion
@@ -51,6 +48,6 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
             return Response.Success(cart);
         }
         #endregion
-    } 
+    }
     #endregion
 }

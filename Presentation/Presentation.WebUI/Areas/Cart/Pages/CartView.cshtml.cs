@@ -1,16 +1,13 @@
-﻿using ProductCatalogue.Presentation.WebUI.Common;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem;
+using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem;
+using ProductCatalogue.Application.ProductCatalogue.Queries.GetCart;
+using ProductCatalogue.Domain.Entities.ProductCatalogue;
+using ProductCatalogue.Presentation.WebUI.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProductCatalogue.Domain.Entities.ProductCatalogue;
-using ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts;
-using ProductCatalogue.Application.ProductCatalogue.Queries.GetCart;
-using System;
-using ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem;
-using ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem;
 
 namespace ProductCatalogue.Presentation.WebUI.Areas.Cart.Pages
 {

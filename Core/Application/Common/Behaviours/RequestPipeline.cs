@@ -1,9 +1,6 @@
 ﻿using ProductCatalogue.Application.Common.Messaging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +31,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
             {
                 throw;
             }
-        } 
+        }
         #endregion
     }
 }

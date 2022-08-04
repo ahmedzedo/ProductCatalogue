@@ -1,11 +1,9 @@
-﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
+﻿using ProductCatalogue.Application.Common.Exceptions;
+using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
-using ProductCatalogue.Domain.Entities.ProductCatalogue;
-using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ProductCatalogue.Application.Common.Exceptions;
 
 namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
 {
@@ -21,21 +19,17 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
     public class UpdateCartItemCommandHandler : BaseCommandHandler<UpdateCartItemCommand, bool>
     {
         #region Dependencies
-        //private ICartItemRepository CartItemRepository { get; }
-        //private IUnitOfWork UnitOfWork { get; }
+
         public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
         #endregion
 
         #region Constructor
         public UpdateCartItemCommandHandler(
-            IServiceProvider serviceProvider//,
-            //IUnitOfWork unitOfWork,
-            /*ICartItemRepository cartItemRepository*/)
+            IServiceProvider serviceProvider)
            : base(serviceProvider)
         {
-            //UnitOfWork = unitOfWork;
-            //CartItemRepository = cartItemRepository;
+
         }
         #endregion
 

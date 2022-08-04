@@ -3,7 +3,6 @@ using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using ProductCatalogue.Infrastructure.Identity;
 using ProductCatalogue.Persistence.EF;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

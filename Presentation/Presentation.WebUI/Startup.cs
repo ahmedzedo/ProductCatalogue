@@ -1,7 +1,3 @@
-using ProductCatalogue.Application;
-using ProductCatalogue.Application.Common.Interfaces.Account;
-using ProductCatalogue.Configuration.WebUI;
-using ProductCatalogue.WebUI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using ProductCatalogue.Application.Common.Interfaces.Account;
+using ProductCatalogue.Configuration.WebUI;
+using ProductCatalogue.WebUI.Services;
 using System.Linq;
 
 namespace ProductCatalogue.Presentation.WebUI
@@ -32,7 +31,7 @@ namespace ProductCatalogue.Presentation.WebUI
             services.AddInfrastructure(Configuration);
             services.AddRazorPages();
             services.AddHttpContextAccessor();
-            
+
             // Customise default API behaviour
             services.Configure<ApiBehaviorOptions>(options =>
             {

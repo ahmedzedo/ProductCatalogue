@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +24,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
     {
         #region Dependencies
 
-       // public IProductDataQuery ProductDataQuery => (IProductDataQuery)ServiceProvider.GetService(typeof(IProductDataQuery));
+        // public IProductDataQuery ProductDataQuery => (IProductDataQuery)ServiceProvider.GetService(typeof(IProductDataQuery));
         public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
         #endregion
 
@@ -38,7 +37,8 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
         #endregion
 
         #region Handel
-        public async override Task<IResponse<IEnumerable<Product>>> HandleRequest(GetPagedProductQuery request, CancellationToken cancellationToken)
+        public override async Task<IResponse<IEnumerable<Product>>> HandleRequest(GetPagedProductQuery request,
+                                                                                  CancellationToken cancellationToken)
         {
             (IEnumerable<Product> items, int totalCount) = await DbContext.ProductQuery
                 .IncludeCartItems()
@@ -48,8 +48,8 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
                 .ToPagedListAsync(request.PageIndex, request.PageSize);
 
             IProductDataQuery productDataQuery = DbContext.ProductQuery;
-         var x =   productDataQuery.Where(p => p.Name == "product1")
-                            .FirstOrDefault();
+            var x = productDataQuery.Where(p => p.Name == "product1")
+                               .FirstOrDefault();
 
             Debug.WriteLine("in request");
 

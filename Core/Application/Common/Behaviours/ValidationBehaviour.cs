@@ -1,12 +1,11 @@
-﻿using ProductCatalogue.Application.Common.Messaging;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ValidationException = ProductCatalogue.Application.Common.Exceptions.ValidationException;
-using System.Diagnostics;
 
 namespace ProductCatalogue.Application.Common.Behaviours
 {
@@ -40,7 +39,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
                     throw new ValidationException(failures);
             }
             return await next();
-        } 
+        }
         #endregion
     }
 }

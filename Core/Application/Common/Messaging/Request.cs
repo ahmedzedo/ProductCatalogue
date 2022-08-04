@@ -1,6 +1,6 @@
 ﻿namespace ProductCatalogue.Application.Common.Messaging
 {
-     public class BaseRequest<TResponse> : IBaseRequest<TResponse>
+    public class BaseRequest<TResponse> : IBaseRequest<TResponse>
     {
         #region Properties
         public string UserName { get; set; }
@@ -14,7 +14,7 @@
         }
         #endregion
     }
-    
+
     public class Request<TResponse> : BaseRequest<IResponse<TResponse>>
     {
         public Request(string userName = default)
@@ -57,7 +57,7 @@
         {
 
         }
-        
+
         #endregion
     }
 }

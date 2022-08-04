@@ -1,5 +1,5 @@
-﻿using ProductCatalogue.Application.Common.Models;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
+using ProductCatalogue.Application.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace ProductCatalogue.Application.Common.Exceptions
     public class ValidationException : Exception
     {
         #region Properties
-        public Errors Errors { get; } 
+        public Errors Errors { get; }
         #endregion
 
         #region Constructors
@@ -25,9 +25,9 @@ namespace ProductCatalogue.Application.Common.Exceptions
             Errors.AddErrors(failures
                 .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
                 .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray()));
-        } 
+        }
         #endregion
 
-       
+
     }
 }

@@ -1,13 +1,11 @@
-﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
-using ProductCatalogue.Domain.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using static Common.Extension.Linq.IQueryableExtension;
-using ProductCatalogue.Domain.Entities.ProductCatalogue;
 
 namespace ProductCatalogue.Persistence.EF.Repositories
 {
@@ -25,7 +23,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         {
             this.DbSet = dbSet;
             this.DbQuery = DbSet.AsNoTracking().AsQueryable();
-          //  ResetQuery();
+            //  ResetQuery();
         }
         #endregion
 
@@ -46,7 +44,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// </returns>
         public T Add(T entity)
         {
-            return  DbSet.Add(entity).Entity;
+            return DbSet.Add(entity).Entity;
         }
 
         /// <summary>
@@ -95,7 +93,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         public virtual void Update(object id, T entity)
         {
             _ = DbSet.Find(id);
-            
+
             DbSet.Update(entity);
         }
 

@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Presentation.WebAPI.Common;
 using ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Presentation.WebAPI.Controllers

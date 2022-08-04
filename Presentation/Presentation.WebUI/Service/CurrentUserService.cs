@@ -1,5 +1,5 @@
-﻿using ProductCatalogue.Application.Common.Interfaces.Account;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using ProductCatalogue.Application.Common.Interfaces.Account;
 using System.Security.Claims;
 
 namespace ProductCatalogue.WebUI.Services

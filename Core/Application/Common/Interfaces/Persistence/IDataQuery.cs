@@ -1,5 +1,4 @@
-﻿using ProductCatalogue.Domain.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,7 +19,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <returns>
         /// The <see cref="T"/>.
         /// </returns>
-         T Add(T entity);
+        T Add(T entity);
 
         /// <summary>
         /// The add.
@@ -28,7 +27,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="entities">
         /// The entities.
         /// </param>
-         void Add(IEnumerable<T> entities);
+        void Add(IEnumerable<T> entities);
 
         /// <summary>
         /// The add async.
@@ -39,7 +38,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-          Task<T> AddAsync(T entity);
+        Task<T> AddAsync(T entity);
 
         /// <summary>
         /// The add.
@@ -47,20 +46,20 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="entities">
         /// The entities.
         /// </param>
-         void AddAsync(IEnumerable<T> entities);
+        void AddAsync(IEnumerable<T> entities);
 
         /// <summary>
         /// Update by Specific Object 
         /// </summary>
         /// <param name="id">Key</param>
         /// <param name="t"> updated Object</param>
-          void Update(object id, T entity);
+        void Update(object id, T entity);
 
         /// <summary>
         /// Updated
         /// </summary>
         /// <param name="entityToUpdate"> Updated Object</param>
-          void Update(T updatedEntity);
+        void Update(T updatedEntity);
 
         /// <summary>
         /// The delete.
@@ -71,7 +70,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-          bool Delete(T entity);
+        bool Delete(T entity);
 
         /// <summary>
         /// The delete.
@@ -79,7 +78,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="entities">
         /// The entities.
         /// </param>
-          void Delete(IEnumerable<T> entities);
+        void Delete(IEnumerable<T> entities);
 
         /// <summary>
         /// The delete by id.
@@ -90,7 +89,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-          bool DeleteById(object id);
+        bool DeleteById(object id);
 
 
         #endregion
@@ -116,7 +115,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// The <see cref="Task"/>.
         /// </returns>
         Task<T> GetByIdAsync(object id);
-       
+
         /// <summary>
         /// Track the eniities of the query
         /// </summary>
@@ -289,6 +288,6 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="pageIndex">The page index.</param>
         /// <param name="pageSize">The page size.</param>
         /// <returns>The result.</returns>
-        Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize);   
+        Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize);
     }
 }

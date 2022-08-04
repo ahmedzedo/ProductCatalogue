@@ -1,6 +1,6 @@
-﻿using ProductCatalogue.Domain.Entities.ProductCatalogue;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ProductCatalogue.Domain.Entities.ProductCatalogue;
 
 namespace Persistence.EF.Configurations
 {
@@ -8,11 +8,12 @@ namespace Persistence.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasKey(e => e.Id);
+            builder.Property(t => t.Id).HasDefaultValueSql("NEWID()");
+            builder.HasKey(t => t.Id);
             builder.Property(t => t.Name)
                 .HasMaxLength(200)
                 .IsRequired();
-           
+
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ProductCatalogue.Presentation.WebUI.Pages
 
         public IActionResult OnGet()
         {
-           return LocalRedirect("/Products/index");
+            return LocalRedirect("/Products/index");
         }
     }
 }

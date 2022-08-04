@@ -1,10 +1,4 @@
-﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -93,7 +87,7 @@ namespace ProductCatalogue.Application.Common.Messaging
         {
 
         }
-    } 
+    }
     #endregion
 
 

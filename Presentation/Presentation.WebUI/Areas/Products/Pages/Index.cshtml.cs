@@ -30,14 +30,14 @@ namespace ProductCatalogue.Presentation.WebUI.Areas.Products.Pages
         public GetPagedProductQuery GetPagedProductQuery { get; set; } = new GetPagedProductQuery();
         [BindProperty]
         public AddItemToCartCommand AddItemToCartCommand { get; set; } = new AddItemToCartCommand();
-        public IList<Product> Product { get; set; }
+        public IList<GetPagedProductDto> Product { get; set; }
         #endregion
 
         #region Handlers
         public async Task OnGetAsync()
         {
             GetPagedProductQuery.PagePerPages = 3;
-            GetPagedProductQuery.PageSize = 10;
+            GetPagedProductQuery.PageSize = 5;
             GetPagedProductQuery.UserName = HttpContext.User?.Identity.Name ?? "";
             var response = await Mediator.Send(GetPagedProductQuery);
             Product = response.Data.ToList();

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.EF
 {
-    public static class ApplicationDbContextSeed
+    public static class CatalogueDbContextSeed
     {
         public static async Task SeedDefaultUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -28,7 +28,7 @@ namespace Persistence.EF
                 await userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
             }
         }
-        public static async Task SeedSampleDataAsync(ApplicationDbContext context)
+        public static async Task SeedSampleDataAsync(CatalogueDbContext context)
         {
             // Seed, if necessary
             if (!context.Products.Any())
@@ -116,7 +116,7 @@ namespace Persistence.EF
                 await context.SaveChangesAsync();
             }
         }
-        public static void PrintData(ApplicationDbContext context)
+        public static void PrintData(CatalogueDbContext context)
         {
             // Gets and prints all books in database
 

@@ -21,13 +21,12 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
     {
         #region Dependencies
 
-        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
         #endregion
 
         #region Constructor
-        public GetCartQueryHandler(IServiceProvider serviceProvider)
-           : base(serviceProvider)
+        public GetCartQueryHandler(IServiceProvider serviceProvider,IApplicationDbContext dbContext)
+           : base(serviceProvider, dbContext)
         {
         }
         #endregion

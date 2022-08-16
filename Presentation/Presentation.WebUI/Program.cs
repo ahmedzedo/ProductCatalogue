@@ -22,10 +22,10 @@ namespace ProductCatalogue.Presentation.WebUI
 
                 try
                 {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    var context = services.GetRequiredService<CatalogueDbContext>();
                     context.Database.EnsureCreated();
 
-                    await ApplicationDbContextSeed.SeedSampleDataAsync(context);
+                    await CatalogueDbContextSeed.SeedSampleDataAsync(context);
                 }
                 catch (Exception ex)
                 {

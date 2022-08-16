@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Persistence.EF.Extensions
 {
-    public static class ApplicationDbContextExtension
+    public static class DbCatalogueDbContextExtension
     {
-        public static bool ValidateEntities(this ApplicationDbContext context)
+        public static bool ValidateEntities(this CatalogueDbContext context)
         {
             bool isValid = true;
             var entities = (from entry in context.ChangeTracker.Entries()

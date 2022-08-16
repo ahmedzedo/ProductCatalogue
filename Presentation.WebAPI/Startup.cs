@@ -46,7 +46,7 @@ namespace Presentation.WebAPI
             }
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var context = serviceScope.ServiceProvider.GetRequiredService<CatalogueDbContext>();
                 context.Database.EnsureCreated();
             }
             app.UseHttpsRedirection();

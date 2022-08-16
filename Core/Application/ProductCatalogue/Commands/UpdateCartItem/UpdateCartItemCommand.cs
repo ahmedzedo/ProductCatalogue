@@ -20,14 +20,13 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
     {
         #region Dependencies
 
-        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
         #endregion
 
         #region Constructor
         public UpdateCartItemCommandHandler(
-            IServiceProvider serviceProvider)
-           : base(serviceProvider)
+            IServiceProvider serviceProvider,IApplicationDbContext dbContext)
+           : base(serviceProvider, dbContext)
         {
 
         }

@@ -12,10 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Repositories\ProductCatalogue\CartItemRepository.cs" />
-    <Compile Remove="Repositories\ProductCatalogue\CartRepository.cs" />
-    <Compile Remove="Repositories\ProductCatalogue\ProductRepository.cs" />
-    <Compile Remove="Repositories\Repository.cs" />
+    <Compile Remove="DataQueries\ProductCatalogue\CartItemRepository.cs" />
+    <Compile Remove="DataQueries\ProductCatalogue\CartRepository.cs" />
+    <Compile Remove="DataQueries\ProductCatalogue\ProductRepository.cs" />
   </ItemGroup>
 
   <ItemGroup>

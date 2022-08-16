@@ -19,13 +19,12 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
     {
         #region Dependencies
 
-        public IApplicationDbContext DbContext => (IApplicationDbContext)ServiceProvider.GetService(typeof(IApplicationDbContext));
 
         #endregion
 
         #region Constructor
-        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider)
-           : base(serviceProvider)
+        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider,IApplicationDbContext dbContext)
+           : base(serviceProvider, dbContext)
         {
 
         }

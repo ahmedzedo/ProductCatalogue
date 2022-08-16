@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Persistence.EF.DataQueries;
+using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
+using ProductCatalogue.Domain.Entities.ProductCatalogue;
+using ProductCatalogue.Persistence.EF;
+using System.Linq;
+
+namespace Persistence.EF.DataQueries.ProductCatalogue
+{
+    public class ProductDataQuery : DataQuery<Product>, IProductDataQuery
+    {
+        #region Constructor
+        public ProductDataQuery(CatalogueDbContext dbContext) : base(dbContext)
+        {
+        }
+        #endregion
+
+        public IProductDataQuery IncludeCartItems(string userName)
+        {
+            DbQuery = DbQuery.Include(p => p.CartItems).ThenInclude(c => c.Cart);
+          
+            return this;
+        }
+    }
+}

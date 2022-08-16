@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductCatalogue.Application.Common.Interfaces.Persistence;
+using ProductCatalogue.Persistence.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using static Common.Extension.Linq.IQueryableExtension;
 
-namespace ProductCatalogue.Persistence.EF.Repositories
+namespace Persistence.EF.DataQueries
 {
     public class DataQuery<T> : IDataQuery<T> where T : class
     {
@@ -16,14 +17,15 @@ namespace ProductCatalogue.Persistence.EF.Repositories
 
         protected internal IQueryable<T> DbQuery { get; set; }
         protected internal DbSet<T> DbSet { get; set; }
+        protected internal CatalogueDbContext DbContext { get; set; }
         #endregion
 
         #region Constructors
-        public DataQuery(DbSet<T> dbSet)
+        public DataQuery(CatalogueDbContext dbContext)
         {
-            this.DbSet = dbSet;
-            this.DbQuery = DbSet.AsNoTracking().AsQueryable();
-            //  ResetQuery();
+            DbContext = dbContext;
+            DbSet = DbContext.Set<T>();
+            DbQuery = DbSet.AsNoTracking().AsQueryable();
         }
         #endregion
 
@@ -170,7 +172,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// </returns>
         public T GetById(object id)
         {
-            return this.DbSet.Find(id);
+            return DbSet.Find(id);
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// </returns>
         public async Task<T> GetByIdAsync(object id)
         {
-            return await this.DbSet.FindAsync(id);
+            return await DbSet.FindAsync(id);
         }
 
         /// <summary>
@@ -193,7 +195,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual IDataQuery<T> AsTracking()
         {
-            this.DbQuery = this.DbQuery.AsTracking();
+            DbQuery = DbQuery.AsTracking();
 
             return this;
         }
@@ -205,10 +207,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns>The result.</returns>
         public virtual IDataQuery<T> Where(Expression<Func<T, bool>> filter)
         {
-            if (filter != null)
-            {
-                this.DbQuery = this.DbQuery.Where(filter);
-            }
+            DbQuery = DbQuery.Where(filter);
 
             return this;
         }
@@ -223,7 +222,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         {
             if (IfCondition == true && filter != null)
             {
-                this.DbQuery = this.DbQuery.Where(filter);
+                DbQuery = DbQuery.Where(filter);
             }
 
             return this;
@@ -238,7 +237,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         {
             if (!string.IsNullOrEmpty(include))
             {
-                this.DbQuery = this.DbQuery.Include(include);
+                DbQuery = DbQuery.Include(include);
             }
 
             return this;
@@ -253,7 +252,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         {
             if (orderBy != null)
             {
-                this.DbQuery = orderBy(this.DbQuery).AsQueryable();
+                DbQuery = orderBy(DbQuery).AsQueryable();
             }
 
             return this;
@@ -270,7 +269,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         {
             if (!string.IsNullOrEmpty(propertyName))
             {
-                this.DbQuery = this.DbQuery.Order(propertyName, sortDirection, anotherLevel);
+                DbQuery = DbQuery.Order(propertyName, sortDirection, anotherLevel);
             }
 
             return this;
@@ -282,9 +281,22 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual T FirstOrDefault(Expression<Func<T, bool>> predicate = null)
         {
-            var result = predicate != null ? this.DbQuery.FirstOrDefault(predicate) : this.DbQuery.FirstOrDefault();
+            return predicate == null ? DbQuery.FirstOrDefault() : DbQuery.FirstOrDefault(predicate);
+        }
 
-            return result;
+        /// <summary>
+        /// The fist or default with project each element of sequence into a new form
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="selector"></param>
+        /// <param name="predicate"></param>
+        /// <returns>TResult</returns>
+        public virtual TResult FirstOrDefault<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>> predicate = null)
+        {
+            var query = predicate == null ? DbQuery.Select(selector)
+                                          : DbQuery.Where(predicate).Select(selector);
+
+            return query.FirstOrDefault();
         }
 
         /// <summary>
@@ -293,9 +305,23 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null)
         {
-            var result = predicate != null ? this.DbQuery.FirstOrDefault(predicate) : this.DbQuery.FirstOrDefault();
+            return predicate != null ? await DbQuery.FirstOrDefaultAsync(predicate) : await DbQuery.FirstOrDefaultAsync();
+        }
 
-            return await Task.FromResult(result);
+        /// <summary>
+        /// The fist or default with project each element of sequence into a new form
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="selector"></param>
+        /// <param name="predicate"></param>
+        /// <returns>TResult</returns>
+        public virtual async Task<TResult> FirstOrDefaultAsync<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>> predicate = null)
+        {
+            var query = predicate != null ?
+                 DbQuery.Where(predicate).Select(selector)
+                : DbQuery.Select(selector);
+
+            return await query.FirstOrDefaultAsync();
         }
         /// <summary>
         /// Any
@@ -303,9 +329,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual bool Any()
         {
-            var result = this.DbQuery.Any();
-
-            return result;
+            return DbQuery.Any();
         }
 
         /// <summary>
@@ -314,9 +338,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual async Task<bool> AnyAsync()
         {
-            var result = await this.DbQuery.AnyAsync();
-
-            return result;
+            return await DbQuery.AnyAsync();
         }
 
         /// <summary>
@@ -326,9 +348,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
-            var result = await this.DbQuery.AnyAsync(expression);
-
-            return result;
+            return await DbQuery.AnyAsync(expression);
         }
 
         /// <summary>
@@ -338,9 +358,19 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual List<T> Top(int count)
         {
-            var result = this.DbQuery.Take(count).ToList();
+            return DbQuery.Take(count).ToList();
+        }
 
-            return result;
+        /// <summary>
+        /// Get top result of sequence  
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="count"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual List<TResult> Top<TResult>(int count, Expression<Func<T, TResult>> selector)
+        {
+            return DbQuery.Select(selector).Take(count).ToList();
         }
 
         /// <summary>
@@ -350,22 +380,43 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual async Task<List<T>> TopAsync(int count)
         {
-            var result = await Task.FromResult(this.DbQuery.Take(count).ToList());
-
-            return result;
+            return await DbQuery.Take(count).ToListAsync();
         }
 
         /// <summary>
-        /// the GetLast get the last items 
+        /// The Top async
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="count"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual async Task<List<TResult>> TopAsync<TResult>(int count, Expression<Func<T, TResult>> selector)
+        {
+            return await DbQuery.Select(selector).Take(count).ToListAsync();
+        }
+
+        /// <summary>
+        /// the Last get the last items 
         /// </summary>
         /// <param name="count">count of items</param>
         /// <returns></returns>
         public virtual List<T> Last(int count)
         {
-            var result = this.DbQuery.TakeLast(count).ToList();
-
-            return result;
+            return DbQuery.TakeLast(count).ToList();
         }
+
+        /// <summary>
+        /// The last  get the last elements
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="count"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual List<TResult> Last<TResult>(int count, Expression<Func<T, TResult>> selector)
+        {
+            return DbQuery.Select(selector).TakeLast(count).ToList();
+        }
+
         /// <summary>
         ///  the last items 
         /// </summary>
@@ -373,9 +424,12 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual async Task<List<T>> LastAsync(int count)
         {
-            var result = await Task.FromResult(this.DbQuery.TakeLast(count).ToList());
+            return await Task.FromResult(DbQuery.TakeLast(count).ToList());
+        }
 
-            return result;
+        public virtual async Task<List<TResult>> LastAsync<TResult>(int count, Expression<Func<T, TResult>> selector)
+        {
+            return await DbQuery.Select(selector).TakeLast(count).ToListAsync();
         }
 
         /// <summary>
@@ -384,10 +438,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual int Count()
         {
-            var result = this.DbQuery.Count();
-            //ResetQuery();
-
-            return result;
+            return DbQuery.Count();
         }
 
         /// <summary>
@@ -396,9 +447,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual async Task<int> CountAsync()
         {
-            var result = await Task.FromResult(this.DbQuery.Count());
-
-            return result;
+            return await Task.FromResult(DbQuery.Count());
         }
 
         /// <summary>
@@ -407,9 +456,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual T Max()
         {
-            var result = this.DbQuery.Max();
-
-            return result;
+            return DbQuery.Max();
         }
 
         /// <summary>
@@ -418,9 +465,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns>Maximium value in operation</returns>
         public virtual async Task<T> MaxAsync()
         {
-            var result = await Task.FromResult(this.DbQuery.Max());
-
-            return result;
+            return await DbQuery.MaxAsync();
         }
 
         /// <summary>
@@ -429,9 +474,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual T Min()
         {
-            var result = this.DbQuery.Min();
-
-            return result;
+            return DbQuery.Min();
         }
 
         /// <summary>
@@ -440,9 +483,7 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual async Task<T> MinAsync()
         {
-            var result = await Task.FromResult(this.DbQuery.Min());
-
-            return result;
+            return await Task.FromResult(DbQuery.Min());
         }
 
         /// <summary>
@@ -451,20 +492,18 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns>The result.</returns>
         public virtual List<T> ToList()
         {
-            var result = this.DbQuery.ToList();
-
-            return result;
+            return DbQuery.ToList();
         }
 
         /// <summary>
-        /// AsEnumerable
+        /// The to list.
         /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="selector"></param>
         /// <returns></returns>
-        public virtual IEnumerable<T> AsEnumerable()
+        public virtual List<TResult> ToList<TResult>(Expression<Func<T, TResult>> selector)
         {
-            var result = this.DbQuery.AsEnumerable();
-
-            return result;
+            return DbQuery.Select(selector).ToList();
         }
 
         /// <summary>
@@ -473,9 +512,38 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns>The result.</returns>
         public virtual async Task<List<T>> ToListAsync()
         {
-            var result = await Task.FromResult(this.DbQuery.ToList());
+            return await DbQuery.ToListAsync();
+        }
 
-            return result;
+        // <summary>
+        /// ToListAsync
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual async Task<List<TResult>> ToListAsync<TResult>(Expression<Func<T, TResult>> selector)
+        {
+            return await DbQuery.Select(selector).ToListAsync();
+        }
+
+        /// <summary>
+        /// AsEnumerable
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<T> AsEnumerable()
+        {
+            return DbQuery.AsEnumerable();
+        }
+
+        /// <summary>
+        /// AsEnumerable
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<TResult> AsEnumerable<TResult>(Expression<Func<T, TResult>> selector)
+        {
+            return DbQuery.Select(selector).AsEnumerable();
         }
 
         /// <summary>
@@ -484,10 +552,20 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns></returns>
         public virtual IAsyncEnumerable<T> AsAsyncEnumerable()
         {
-            var result = this.DbQuery.AsAsyncEnumerable();
-
-            return result;
+            return DbQuery.AsAsyncEnumerable();
         }
+
+        /// <summary>
+        /// AsAsyncEnumerable
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual IAsyncEnumerable<TResult> AsAsyncEnumerable<TResult>(Expression<Func<T, TResult>> selector)
+        {
+            return DbQuery.Select(selector).AsAsyncEnumerable();
+        }
+
         /// <summary>
         /// The to pages list.
         /// </summary>
@@ -496,8 +574,24 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns>The result.</returns>
         public virtual (List<T>, int totalCount) ToPagedList(int pageIndex, int pageSize)
         {
-            int totalCount = this.DbQuery.Count();
-            var result = this.DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+            int totalCount = DbQuery.Count();
+            var result = DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+            return (result, totalCount);
+        }
+
+        /// <summary>
+        /// The to pages list.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual (List<TResult>, int totalCount) ToPagedList<TResult>(int pageIndex, int pageSize, Expression<Func<T, TResult>> selector)
+        {
+            int totalCount = DbQuery.Count();
+            var result = DbQuery.Select(selector).Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
             return (result, totalCount);
         }
@@ -510,8 +604,24 @@ namespace ProductCatalogue.Persistence.EF.Repositories
         /// <returns>The result.</returns>
         public virtual async Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize)
         {
-            int totalCount = this.DbQuery.Count();
-            var result = await this.DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
+            int totalCount = DbQuery.Count();
+            var result = await DbQuery.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
+
+            return (result, totalCount);
+        }
+
+        /// <summary>
+        /// the ToPagedListAsync
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public virtual async Task<(List<TResult>, int totalCount)> ToPagedListAsync<TResult>(int pageIndex, int pageSize, Expression<Func<T, TResult>> selector)
+        {
+            int totalCount = DbQuery.Count();
+            var result = await DbQuery.Select(selector).Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
 
             return (result, totalCount);
         }

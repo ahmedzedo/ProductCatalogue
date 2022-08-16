@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,11 +35,12 @@ namespace ProductCatalogue.Application.Common.Messaging
     public abstract class BaseRequestHandler<TIn, TOut> : AbstractBaseRequestHandler<TIn, IResponse<TOut>>
    where TIn : Request<TOut>
     {
+        protected IApplicationDbContext DbContext { get; }
         #region Constructor
-        public BaseRequestHandler(IServiceProvider serviceProvider)
+        public BaseRequestHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
            : base(serviceProvider)
         {
-
+            DbContext = dbContext;
         }
         #endregion
 
@@ -70,8 +72,8 @@ namespace ProductCatalogue.Application.Common.Messaging
     public abstract class BaseCommandHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
     where TIn : BaseCommand<TOut>
     {
-        public BaseCommandHandler(IServiceProvider serviceProvider)
-          : base(serviceProvider)
+        public BaseCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+          : base(serviceProvider, dbContext)
         {
 
         }
@@ -82,8 +84,8 @@ namespace ProductCatalogue.Application.Common.Messaging
     public abstract class BaseQueryHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
     where TIn : BaseQuery<TOut>
     {
-        public BaseQueryHandler(IServiceProvider serviceProvider)
-          : base(serviceProvider)
+        public BaseQueryHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+          : base(serviceProvider, dbContext)
         {
 
         }

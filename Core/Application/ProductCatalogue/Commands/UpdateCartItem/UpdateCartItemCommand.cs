@@ -25,7 +25,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.UpdateCartItem
 
         #region Constructor
         public UpdateCartItemCommandHandler(
-            IServiceProvider serviceProvider,IApplicationDbContext dbContext)
+            IServiceProvider serviceProvider, IApplicationDbContext dbContext)
            : base(serviceProvider, dbContext)
         {
 

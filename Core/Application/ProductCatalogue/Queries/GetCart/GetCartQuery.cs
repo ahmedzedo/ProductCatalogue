@@ -25,7 +25,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
         #endregion
 
         #region Constructor
-        public GetCartQueryHandler(IServiceProvider serviceProvider,IApplicationDbContext dbContext)
+        public GetCartQueryHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
            : base(serviceProvider, dbContext)
         {
         }
@@ -40,11 +40,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
                                           .Include("Items.Product")
                                           .FirstOrDefaultAsync();
 
-            if (cart == null)
-            {
-                return Response.Failuer<Cart>("No item in cart");
-            }
-            return Response.Success(cart);
+            return cart == null ? Response.Failuer<Cart>("No item in cart") : Response.Success(cart);
         }
         #endregion
     }

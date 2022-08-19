@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using static Common.Extension.Linq.IQueryableExtension;
@@ -149,7 +148,14 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// </summary>
         /// <param name="keySelector">The key selector.</param>
         /// <returns>The result.</returns>
-        IDataQuery<T> OrderBy(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
+        IDataQuery<T> OrderBy<Tkey>(Expression<Func<T, Tkey>> expression);
+
+        /// <summary>
+        /// The Order By Descending.
+        /// </summary>
+        /// <param name="keySelector">The key selector.</param>
+        /// <returns>The result.</returns>
+        IDataQuery<T> OrderByDescending<Tkey>(Expression<Func<T, Tkey>> expression);
 
         /// <summary>
         /// Order by using dynamic sort
@@ -159,7 +165,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="anotherLevel"></param>
         /// <returns></returns>
         IDataQuery<T> OrderBy(string propertyName, SortDirection sortDirection = SortDirection.Ascending, bool anotherLevel = false);
-       
+
         /// <summary>
         /// The fist or default
         /// </summary>
@@ -173,7 +179,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="selector"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        TResult FirstOrDefault<TResult>(Expression<Func<T, TResult>> selector,Expression<Func<T, bool>> predicate = null);
+        TResult FirstOrDefault<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>> predicate = null);
 
         /// <summary>
         /// The fist or default with project each element of sequence into a new form
@@ -195,27 +201,27 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// Any
         /// </summary>
         /// <returns></returns>
-         bool Any();
+        bool Any();
 
         /// <summary>
         /// AnyAsync
         /// </summary>
         /// <returns></returns>
-          Task<bool> AnyAsync();
+        Task<bool> AnyAsync();
 
         /// <summary>
         /// AnyAsync
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-          Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
+        Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
 
         /// <summary>
         /// The Top
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-         List<T> Top(int count);
+        List<T> Top(int count);
 
         /// <summary>
         /// Get top result of sequence  
@@ -224,14 +230,14 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="count"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-         List<TResult> Top<TResult>(int count, Expression<Func<T, TResult>> selector);
+        List<TResult> Top<TResult>(int count, Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// The Top 
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-          Task<List<T>> TopAsync(int count);
+        Task<List<T>> TopAsync(int count);
 
         /// <summary>
         /// The Top 
@@ -240,14 +246,14 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="count"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-          Task<List<TResult>> TopAsync<TResult>(int count, Expression<Func<T, TResult>> selector);
+        Task<List<TResult>> TopAsync<TResult>(int count, Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// the Last get the last items 
         /// </summary>
         /// <param name="count">count of items</param>
         /// <returns></returns>
-         List<T> Last(int count);
+        List<T> Last(int count);
 
         /// <summary>
         /// The last  get the last elements
@@ -256,58 +262,58 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="count"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-         List<TResult> Last<TResult>(int count, Expression<Func<T, TResult>> selector);
+        List<TResult> Last<TResult>(int count, Expression<Func<T, TResult>> selector);
 
         /// <summary>
         ///  the last items 
         /// </summary>
         /// <param name="count">count of items</param>
         /// <returns></returns>
-          Task<List<T>> LastAsync(int count);
+        Task<List<T>> LastAsync(int count);
 
-          Task<List<TResult>> LastAsync<TResult>(int count, Expression<Func<T, TResult>> selector);
+        Task<List<TResult>> LastAsync<TResult>(int count, Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// the Count
         /// </summary>
         /// <returns></returns>
-         int Count();
+        int Count();
 
         /// <summary>
         /// the CountAsync
         /// </summary>
         /// <returns></returns>
-          Task<int> CountAsync();
+        Task<int> CountAsync();
 
         /// <summary>
         /// Get Maximum value
         /// </summary>
         /// <returns></returns>
-         T Max();
+        T Max();
 
         /// <summary>
         /// MaxAsync
         /// </summary>
         /// <returns>Maximium value in operation</returns>
-          Task<T> MaxAsync();
+        Task<T> MaxAsync();
 
         /// <summary>
         /// Min value
         /// </summary>
         /// <returns></returns>
-         T Min();
+        T Min();
 
         /// <summary>
         /// Min value  
         /// </summary>
         /// <returns></returns>
-          Task<T> MinAsync();
+        Task<T> MinAsync();
 
         /// <summary>
         /// The to list.
         /// </summary>
         /// <returns>The result.</returns>
-         List<T> ToList();
+        List<T> ToList();
 
         /// <summary>
         /// The to list.
@@ -315,13 +321,13 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <typeparam name="TResult"></typeparam>
         /// <param name="selector"></param>
         /// <returns></returns>
-         List<TResult> ToList<TResult>(Expression<Func<T, TResult>> selector);
+        List<TResult> ToList<TResult>(Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// The to list .
         /// </summary>
         /// <returns>The result.</returns>
-          Task<List<T>> ToListAsync();
+        Task<List<T>> ToListAsync();
         /// <summary>
         /// ToListAsync
         /// </summary>
@@ -342,13 +348,13 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <typeparam name="TResult"></typeparam>
         /// <param name="selector"></param>
         /// <returns></returns>
-         IEnumerable<TResult> AsEnumerable<TResult>(Expression<Func<T, TResult>> selector);
+        IEnumerable<TResult> AsEnumerable<TResult>(Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// AsAsyncEnumerable
         /// </summary>
         /// <returns></returns>
-         IAsyncEnumerable<T> AsAsyncEnumerable();
+        IAsyncEnumerable<T> AsAsyncEnumerable();
 
         /// <summary>
         /// AsAsyncEnumerable
@@ -356,7 +362,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <typeparam name="TResult"></typeparam>
         /// <param name="selector"></param>
         /// <returns></returns>
-         IAsyncEnumerable<TResult> AsAsyncEnumerable<TResult>(Expression<Func<T, TResult>> selector);
+        IAsyncEnumerable<TResult> AsAsyncEnumerable<TResult>(Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// The to pages list.
@@ -364,7 +370,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="pageIndex">The page index.</param>
         /// <param name="pageSize">The page size.</param>
         /// <returns>The result.</returns>
-         (List<T>, int totalCount) ToPagedList(int pageIndex, int pageSize);
+        (List<T>, int totalCount) ToPagedList(int pageIndex, int pageSize);
 
         /// <summary>
         /// The to pages list.
@@ -374,7 +380,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="pageSize"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-         (List<TResult>, int totalCount) ToPagedList<TResult>(int pageIndex, int pageSize, Expression<Func<T, TResult>> selector);
+        (List<TResult>, int totalCount) ToPagedList<TResult>(int pageIndex, int pageSize, Expression<Func<T, TResult>> selector);
 
         /// <summary>
         /// The to pages list.
@@ -382,7 +388,7 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="pageIndex">The page index.</param>
         /// <param name="pageSize">The page size.</param>
         /// <returns>The result.</returns>
-          Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize);
+        Task<(List<T>, int totalCount)> ToPagedListAsync(int pageIndex, int pageSize);
 
         /// <summary>
         /// the ToPagedListAsync
@@ -392,6 +398,6 @@ namespace ProductCatalogue.Application.Common.Interfaces.Persistence
         /// <param name="pageSize"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-          Task<(List<TResult>, int totalCount)> ToPagedListAsync<TResult>(int pageIndex, int pageSize, Expression<Func<T, TResult>> selector);
+        Task<(List<TResult>, int totalCount)> ToPagedListAsync<TResult>(int pageIndex, int pageSize, Expression<Func<T, TResult>> selector);
     }
 }

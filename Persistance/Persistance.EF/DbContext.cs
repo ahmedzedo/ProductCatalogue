@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
 using ProductCatalogue.Application.Common.Interfaces.Account;
-using ProductCatalogue.Application.Common.Interfaces.Persistence;
-using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
 using ProductCatalogue.Domain.Common;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using ProductCatalogue.Infrastructure.Identity;

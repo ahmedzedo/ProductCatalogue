@@ -38,9 +38,10 @@ namespace Configuration.WebAPI
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddScoped(typeof(IRequestPipeline<,>), typeof(RequestPipeline<,>));
-           
+
             services.AddTransient(typeof(IDataQuery<>), typeof(DataQuery<>));
             services.AddTransient<IProductDataQuery, ProductDataQuery>();
+            services.AddTransient<ICartDataQuery, CartDataQuery>();
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
             return services;

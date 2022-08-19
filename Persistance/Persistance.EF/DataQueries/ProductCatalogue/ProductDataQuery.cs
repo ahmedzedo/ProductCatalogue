@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Persistence.EF.DataQueries;
 using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using ProductCatalogue.Persistence.EF;
-using System.Linq;
 
 namespace Persistence.EF.DataQueries.ProductCatalogue
 {
@@ -15,11 +13,13 @@ namespace Persistence.EF.DataQueries.ProductCatalogue
         }
         #endregion
 
-        public IProductDataQuery IncludeCartItems(string userName)
+        public virtual IProductDataQuery IncludeCartItems(string userName)
         {
+
             DbQuery = DbQuery.Include(p => p.CartItems).ThenInclude(c => c.Cart);
-          
+
             return this;
         }
+
     }
 }

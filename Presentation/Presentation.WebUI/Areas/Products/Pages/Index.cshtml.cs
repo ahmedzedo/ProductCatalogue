@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart;
 using ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts;
-using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using ProductCatalogue.Presentation.WebUI.Common;
 using System.Collections.Generic;
 using System.Linq;

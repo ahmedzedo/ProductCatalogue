@@ -17,22 +17,22 @@ namespace Persistence.EF.DataQueries
 
         protected internal IQueryable<T> DbQuery { get; set; }
         protected internal DbSet<T> DbSet { get; set; }
-        protected internal CatalogueDbContext DbContext { get; set; }
+        protected internal CatalogueDbContext Context { get; set; }
         #endregion
 
         #region Constructors
         public DataQuery(CatalogueDbContext dbContext)
         {
-            DbContext = dbContext;
-            DbSet = DbContext.Set<T>();
+            Context = dbContext;
+            DbSet = Context.Set<T>();
             DbQuery = DbSet.AsNoTracking().AsQueryable();
         }
-        #endregion
 
-        //protected void ResetQuery()
-        //{
-        //    this.DbQuery = DbSet.AsNoTracking().AsQueryable();
-        //}
+        public DataQuery(IQueryable<T> query)
+        {
+            DbQuery = query;
+        }
+        #endregion
 
         #region Write Methods 
         /// <summary>
@@ -248,16 +248,30 @@ namespace Persistence.EF.DataQueries
         /// </summary>
         /// <param name="keySelector">The key selector.</param>
         /// <returns>The result.</returns>
-        public virtual IDataQuery<T> OrderBy(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public virtual IDataQuery<T> OrderBy<Tkey>(Expression<Func<T, Tkey>> expression)
         {
-            if (orderBy != null)
+            if (expression != null)
             {
-                DbQuery = orderBy(DbQuery).AsQueryable();
+                DbQuery = DbQuery.OrderBy(expression).AsQueryable();
             }
 
             return this;
         }
 
+        /// <summary>
+        /// The order by.
+        /// </summary>
+        /// <param name="keySelector">The key selector.</param>
+        /// <returns>The result.</returns>
+        public virtual IDataQuery<T> OrderByDescending<Tkey>(Expression<Func<T, Tkey>> expression)
+        {
+            if (expression != null)
+            {
+                DbQuery = DbQuery.OrderByDescending(expression).AsQueryable();
+            }
+
+            return this;
+        }
         /// <summary>
         /// Dynamic Order
         /// </summary>

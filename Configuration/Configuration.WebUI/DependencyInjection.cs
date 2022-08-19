@@ -36,7 +36,7 @@ namespace ProductCatalogue.Configuration.WebUI
             services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.FullName.Contains("ProductCatalogue.Application"))
                             .FirstOrDefault());
-           
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddTransient(typeof(IRequestPipeline<,>), typeof(RequestPipeline<,>));
@@ -44,6 +44,8 @@ namespace ProductCatalogue.Configuration.WebUI
 
             services.AddTransient(typeof(IDataQuery<>), typeof(DataQuery<>));
             services.AddTransient<IProductDataQuery, ProductDataQuery>();
+            services.AddTransient<ICartDataQuery, CartDataQuery>();
+
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
             return services;

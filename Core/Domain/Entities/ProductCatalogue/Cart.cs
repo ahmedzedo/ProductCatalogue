@@ -11,7 +11,7 @@ namespace ProductCatalogue.Domain.Entities.ProductCatalogue
         {
             Items = new HashSet<CartItem>();
         }
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
         public Guid UserId { get; set; }
 
         public virtual ICollection<CartItem> Items { get; set; }

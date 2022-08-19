@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace ProductCatalogue.Application.Common.Messaging
 {
-    #region Abstract base Request Handler
-    public abstract class AbstractBaseRequestHandler<TIn, TOut> : IBaseRequestHandler<TIn, TOut>
-  where TIn : IBaseRequest<TOut>
+    #region Class BaseRequestHandler
+    public abstract class BaseRequestHandler<TIn, TOut> : IBaseRequestHandler<TIn, TOut>
+     where TIn : IBaseRequest<TOut>
     {
         #region Dependencies
         protected IServiceProvider ServiceProvider { get; }
@@ -15,7 +15,7 @@ namespace ProductCatalogue.Application.Common.Messaging
         #endregion
 
         #region Constructor
-        public AbstractBaseRequestHandler(IServiceProvider serviceProvider)
+        public BaseRequestHandler(IServiceProvider serviceProvider)
         {
             this.ServiceProvider = serviceProvider;
         }
@@ -31,13 +31,16 @@ namespace ProductCatalogue.Application.Common.Messaging
     }
     #endregion
 
-    #region Base Request Handler
-    public abstract class BaseRequestHandler<TIn, TOut> : AbstractBaseRequestHandler<TIn, IResponse<TOut>>
-   where TIn : Request<TOut>
+    #region Class AppRequestHandler
+    public abstract class AppRequestHandler<TIn, TOut> : BaseRequestHandler<TIn, IResponse<TOut>>
+   where TIn : AppRequest<TOut>
     {
+        #region Dependencies
         protected IApplicationDbContext DbContext { get; }
+        #endregion
+
         #region Constructor
-        public BaseRequestHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+        public AppRequestHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
            : base(serviceProvider)
         {
             DbContext = dbContext;
@@ -68,8 +71,8 @@ namespace ProductCatalogue.Application.Common.Messaging
     }
     #endregion
 
-    #region Base Commmand Handler
-    public abstract class BaseCommandHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
+    #region Class BaseCommandHandler
+    public abstract class BaseCommandHandler<TIn, TOut> : AppRequestHandler<TIn, TOut>
     where TIn : BaseCommand<TOut>
     {
         public BaseCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
@@ -80,8 +83,8 @@ namespace ProductCatalogue.Application.Common.Messaging
     }
     #endregion
 
-    #region Base Query Handler
-    public abstract class BaseQueryHandler<TIn, TOut> : BaseRequestHandler<TIn, TOut>
+    #region Class BaseQueryHandler
+    public abstract class BaseQueryHandler<TIn, TOut> : AppRequestHandler<TIn, TOut>
     where TIn : BaseQuery<TOut>
     {
         public BaseQueryHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)

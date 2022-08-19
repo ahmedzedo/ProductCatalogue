@@ -1,11 +1,7 @@
 ﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
 using ProductCatalogue.Application.Common.Messaging;
-using ProductCatalogue.Application.ProductCatalogue.IDataQueries;
-using ProductCatalogue.Domain.Entities.ProductCatalogue;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,10 +38,11 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts
                 .IncludeCartItems(request.UserName)
                 .WhereIf(!string.IsNullOrEmpty(request.Name), p => p.Name.Contains(request.Name))
                 .WhereIf(!string.IsNullOrEmpty(request.Description), p => p.Description.Contains(request.Description))
-                .OrderBy(p => p.OrderByDescending(o => o.CreatedOn))
+                .OrderByDescending(p => p.CreatedOn)
                 .ToPagedListAsync<GetPagedProductDto>(request.PageIndex, request.PageSize,
                 p => p);
 
+            var x = DbContext.CartQuery.GetCartDetailes().OrderBy(s => s.CartId).FirstOrDefault(p => p.Count == 7);
             //var productDataQuery = DbContext.ProductQuery.Where(p => p.Name == "Product10");
             //productDataQuery = ((IProductDataQuery)productDataQuery).IncludeCartItems(request.UserName);
             //var pro = productDataQuery.FirstOrDefault();

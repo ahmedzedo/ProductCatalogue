@@ -24,14 +24,14 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
     {
         #region Dependencies
 
-    
+
         #endregion
 
         #region Constructor
-        public AddItemToCartCommandHandler(IServiceProvider serviceProvider,IApplicationDbContext dbContext)
+        public AddItemToCartCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
            : base(serviceProvider, dbContext)
         {
-          
+
         }
         #endregion
 

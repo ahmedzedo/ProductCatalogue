@@ -17,7 +17,7 @@ namespace ProductCatalogue.Application.Common.Behaviours
         #endregion
 
         #region Handel
-        public async Task<IResponse<TResponse>> Handle(TRequest request, CancellationToken cancellationToken, MyRequestResponseHandlerDelegate<TResponse> next)
+        public async Task<IResponse<TResponse>> Handle(TRequest request, MyRequestResponseHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             try
             {

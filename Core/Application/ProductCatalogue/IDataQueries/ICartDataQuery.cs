@@ -1,10 +1,11 @@
 ﻿using ProductCatalogue.Application.Common.Interfaces.Persistence;
+using ProductCatalogue.Application.ProductCatalogue.Queries.GetPagedProducts;
 using ProductCatalogue.Domain.Entities.ProductCatalogue;
 
 namespace ProductCatalogue.Application.ProductCatalogue.IDataQueries
 {
-    public interface IProductDataQuery : IDataQuery<Product>
+    public interface ICartDataQuery : IDataQuery<Cart>
     {
-        IProductDataQuery IncludeCartItems(string userName);
+        IDataQuery<CartDetailsDto> GetCartDetailes();
     }
 }

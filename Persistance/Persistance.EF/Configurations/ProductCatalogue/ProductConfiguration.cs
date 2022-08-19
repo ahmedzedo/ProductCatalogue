@@ -13,6 +13,7 @@ namespace Persistence.EF.Configurations
             builder.Property(t => t.Name)
                 .HasMaxLength(200)
                 .IsRequired();
+            builder.Property(t => t.Price).HasColumnType("decimal").HasPrecision(18, 2);
 
         }
     }

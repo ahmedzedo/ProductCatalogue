@@ -24,7 +24,7 @@ namespace Persistence.EF.Extensions
                     validationResults.ForEach(error =>
                     {
                         var errorMessage =
-                              $"Entity: {entity.GetType().ToString()}\nProperty: {error.MemberNames}\n{error.ErrorMessage}";
+                              $"Entity: {entity.GetType()}\nProperty: {error.MemberNames}\n{error.ErrorMessage}";
                         var EntitiesException = new Exception(errorMessage);
                         EntitiesException.Data["PropertyName"] = error.MemberNames;
                         EntitiesException.Data["EntityName"] = entity.GetType().ToString();

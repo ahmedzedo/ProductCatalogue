@@ -1,5 +1,6 @@
 ﻿namespace ProductCatalogue.Application.Common.Messaging
 {
+    #region Class BaseRequest 
     public class BaseRequest<TResponse> : IBaseRequest<TResponse>
     {
         #region Properties
@@ -14,33 +15,48 @@
         }
         #endregion
     }
+    #endregion
 
-    public class Request<TResponse> : BaseRequest<IResponse<TResponse>>
+    #region Class AppRequest
+    public class AppRequest<TResponse> : BaseRequest<IResponse<TResponse>>
     {
-        public Request(string userName = default)
+        #region Constructor
+        public AppRequest(string userName = default)
              : base(userName)
         {
 
         }
+        #endregion
     }
+    #endregion
 
-    public class BaseCommand<TResponse> : Request<TResponse>
+    #region Class BaseCommand
+    public class BaseCommand<TResponse> : AppRequest<TResponse>
     {
+        #region Constructor
         public BaseCommand(string userName = default)
-             : base(userName)
+           : base(userName)
         {
 
         }
+        #endregion
     }
-    public class BaseQuery<TResponse> : Request<TResponse>
+    #endregion
+
+    #region Class BaseQuery
+    public class BaseQuery<TResponse> : AppRequest<TResponse>
     {
+        #region Constructor
         public BaseQuery(string userName = default)
              : base(userName)
         {
 
         }
+        #endregion
     }
+    #endregion
 
+    #region Class PagedListQuery
     public class PagedListQuery<TResponse> : BaseQuery<TResponse>
     {
         #region Properites
@@ -60,4 +76,5 @@
 
         #endregion
     }
+    #endregion
 }

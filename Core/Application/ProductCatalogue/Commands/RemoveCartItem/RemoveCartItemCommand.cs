@@ -23,7 +23,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.RemoveCartItem
         #endregion
 
         #region Constructor
-        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider,IApplicationDbContext dbContext)
+        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
            : base(serviceProvider, dbContext)
         {
 

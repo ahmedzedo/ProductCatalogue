@@ -38,7 +38,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
         #region Request Handle
         public async override Task<IResponse<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
-            var cart = await DbContext.CartQuery.AsTracking().Include("Items").FirstOrDefaultAsync();
+            var cart = await DbContext.CartQuery.AsTracking().Include("Items").OrderByDescending(c=> c.Id).FirstOrDefaultAsync();
 
             if (cart == null)
             {
@@ -46,7 +46,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Commands.AddItemToCart
                 await DbContext.SaveChangesAsync(cancellationToken);
             }
 
-            var item = cart.Items.Where(c => c.ProductId == request.ProductId).FirstOrDefault();
+            var item = cart.Items.FirstOrDefault(c => c.ProductId == request.ProductId);
 
             if (item == null)
             {

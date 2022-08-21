@@ -38,6 +38,7 @@ namespace ProductCatalogue.Application.ProductCatalogue.Queries.GetCart
 
             var cart = await DbContext.CartQuery.Include("Items")
                                           .Include("Items.Product")
+                                          .OrderByDescending(c=> c.CreatedOn)
                                           .FirstOrDefaultAsync();
 
             return cart == null ? Response.Failuer<Cart>("No item in cart") : Response.Success(cart);
